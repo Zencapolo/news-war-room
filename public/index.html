@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>即時新聞戰情系統</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="主要導覽">
+        <div class="brand">
+          <span class="brand-mark">NW</span>
+          <div>
+            <strong>News War Room</strong>
+            <small>即時新聞戰情系統</small>
+          </div>
+        </div>
+        <nav class="nav-list">
+          <a href="#analysis" class="active">戰情摘要</a>
+          <a href="#topics">監測主題</a>
+          <a href="#daily">每日摘要</a>
+          <a href="#marketingTasks">行銷任務</a>
+          <a href="#watchlist">追蹤清單</a>
+          <a href="#search">新聞檢索</a>
+          <a href="#alerts">趨勢與警告</a>
+        </nav>
+        <div class="clock-card">
+          <span id="clockDate">--</span>
+          <strong id="clockTime">--:--:--</strong>
+          <small>Asia/Taipei</small>
+        </div>
+      </aside>
+
+      <main>
+        <section class="panel top-intel" id="analysis">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Realtime Intelligence</p>
+              <h2>戰情摘要與趨勢標籤</h2>
+            </div>
+            <div class="heading-actions">
+              <span class="data-mode" id="updatedAt">--</span>
+              <button id="refreshButton" type="button" title="立即更新新聞">立即刷新</button>
+            </div>
+          </div>
+          <div class="brief-strip" id="briefStrip"></div>
+          <div class="trend-grid" id="trendGrid"></div>
+        </section>
+
+        <section class="metric-grid" aria-label="系統指標">
+          <article class="metric-card">
+            <span>新聞總量</span>
+            <strong id="totalNews">--</strong>
+            <small>已保存與分析的新聞</small>
+          </article>
+          <article class="metric-card">
+            <span>篩選結果</span>
+            <strong id="filteredNews">--</strong>
+            <small>目前條件下的新聞數</small>
+          </article>
+          <article class="metric-card">
+            <span>監測主題</span>
+            <strong id="activeFeeds">--</strong>
+            <small>啟用中的來源與主題</small>
+          </article>
+          <article class="metric-card danger">
+            <span>警告事件</span>
+            <strong id="alertCount">--</strong>
+            <small>已觸發的監測警告</small>
+          </article>
+        </section>
+
+        <section class="panel topic-launcher" id="topics">
+          <div>
+            <p class="eyebrow">Monitoring Topics</p>
+            <h2>自訂監測主題</h2>
+            <p>新增、停用或重設新聞監測主題。</p>
+          </div>
+          <div class="topic-launcher-actions">
+            <span class="data-mode" id="topicSummary">--</span>
+            <button id="openTopicsButton" type="button">管理監測主題</button>
+          </div>
+        </section>
+
+        <dialog class="topic-dialog" id="topicDialog">
+          <div class="topic-modal">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Monitoring Topics</p>
+                <h2>自訂監測主題</h2>
+              </div>
+              <div class="heading-actions">
+                <button class="secondary-button" id="resetTopicsButton" type="button">重設預設</button>
+                <button class="secondary-button" id="closeTopicsButton" type="button">關閉</button>
+              </div>
+            </div>
+            <form class="topic-form" id="topicForm">
+              <input id="topicName" name="name" placeholder="主題名稱，例如：長照" required>
+              <input id="topicQuery" name="query" placeholder="搜尋條件，例如：長照 OR 照護 OR 高齡">
+              <select id="topicPriority" name="priority">
+                <option value="realtime">即時</option>
+                <option value="hourly" selected>每小時</option>
+                <option value="daily">每天</option>
+              </select>
+              <button type="submit">新增主題</button>
+            </form>
+            <div class="topic-list" id="topicList"></div>
+          </div>
+        </dialog>
+
+        <section class="panel" id="daily">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Daily Brief</p>
+              <h2>每日摘要報告</h2>
+            </div>
+            <span class="data-mode" id="dailyDate">--</span>
+          </div>
+          <div class="daily-report" id="dailyReport"></div>
+        </section>
+
+        <section class="panel" id="watchlist">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Watchlist</p>
+              <h2>新聞追蹤清單</h2>
+            </div>
+            <span class="data-mode" id="watchCount">0 則追蹤</span>
+          </div>
+          <div class="watch-list" id="watchList"></div>
+        </section>
+
+        <section class="panel" id="marketingTasks">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Marketing Board</p>
+              <h2>行銷行動任務板</h2>
+            </div>
+            <span class="data-mode" id="marketingTaskCount">0 個任務</span>
+          </div>
+          <div class="task-filter-bar">
+            <select id="taskStatusFilter" aria-label="任務狀態篩選">
+              <option value="all">全部狀態</option>
+              <option value="待處理">待處理</option>
+              <option value="撰寫中">撰寫中</option>
+              <option value="待審核">待審核</option>
+              <option value="已發布">已發布</option>
+              <option value="暫緩">暫緩</option>
+            </select>
+            <select id="taskPriorityFilter" aria-label="任務優先級篩選">
+              <option value="all">全部優先級</option>
+              <option value="高">高優先</option>
+              <option value="中">中優先</option>
+              <option value="低">低優先</option>
+            </select>
+            <select id="taskTypeFilter" aria-label="任務類型篩選">
+              <option value="all">全部類型</option>
+            </select>
+          </div>
+          <div class="marketing-task-list" id="marketingTaskList"></div>
+        </section>
+
+        <section class="panel" id="search">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Vector Search</p>
+              <h2>語義檢索與新聞流</h2>
+            </div>
+          </div>
+          <div class="search-box">
+            <input id="newsSearch" type="search" placeholder="搜尋新聞、主題、來源或趨勢標籤">
+            <select id="categoryFilter" aria-label="分類篩選">
+              <option value="all">全部分類</option>
+            </select>
+            <select id="tagFilter" aria-label="標籤篩選">
+              <option value="all">全部標籤</option>
+            </select>
+            <select id="quickFilter" aria-label="快速篩選">
+              <option value="all">全部新聞</option>
+              <option value="high-impact">高影響力</option>
+              <option value="negative">負面訊號</option>
+            </select>
+            <select id="sortOrder" aria-label="排序方式">
+              <option value="latest">最新優先</option>
+              <option value="impact">影響力最高</option>
+              <option value="sentiment">負面優先</option>
+              <option value="semantic">語義分數最高</option>
+            </select>
+            <button class="secondary-button" id="clearFiltersButton" type="button">清除篩選</button>
+          </div>
+          <div class="news-list" id="newsList"></div>
+        </section>
+
+        <section class="split-grid" id="alerts">
+          <article class="panel">
+            <div class="section-heading compact">
+              <div>
+                <p class="eyebrow">Timeline</p>
+                <h2>關鍵字趨勢時間軸</h2>
+              </div>
+            </div>
+            <div class="timeline-tools">
+              <select id="trendKeyword" aria-label="趨勢關鍵字">
+                <option value="">自動選擇</option>
+              </select>
+              <select id="trendRange" aria-label="趨勢時間範圍">
+                <option value="24h">24 小時</option>
+                <option value="7d">7 天</option>
+              </select>
+            </div>
+            <div class="timeline" id="timeline"></div>
+          </article>
+          <article class="panel">
+            <div class="section-heading compact">
+              <div>
+                <p class="eyebrow">Automation</p>
+                <h2>自動化警告</h2>
+              </div>
+            </div>
+            <div class="alert-list" id="alertList"></div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
