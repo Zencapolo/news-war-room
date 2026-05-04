@@ -1,12 +1,15 @@
 import { createHash } from "node:crypto";
 import { createServer } from "node:http";
-import { readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
+import Database from "better-sqlite3";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 const publicDir = join(root, "public");
 const dataFile = join(root, "data-store.json");
+const dataDir = join(root, "data");
+const sqliteFile = join(dataDir, "news-war-room.db");
 const port = Number(process.env.PORT || 4174);
 
 const categories = ["AI", "慈善", "金融", "教育"];
@@ -74,6 +77,187 @@ const store = {
 };
 
 let saveChain = Promise.resolve();
+let db = null;
+
+async function initSqliteStore() {
+  if (db) return db;
+  await mkdir(dataDir, { recursive: true });
+  db = new Database(sqliteFile);
+  db.pragma("journal_mode = WAL");
+  db.pragma("foreign_keys = ON");
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS metadata (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS feeds (
+      id TEXT PRIMARY KEY,
+      category TEXT,
+      priority TEXT,
+      enabled INTEGER NOT NULL DEFAULT 1,
+      payload TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS articles (
+      fingerprint TEXT PRIMARY KEY,
+      article_id TEXT NOT NULL,
+      title TEXT,
+      category TEXT,
+      source TEXT,
+      published_at TEXT,
+      payload TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_articles_published_at ON articles(published_at);
+    CREATE INDEX IF NOT EXISTS idx_articles_category ON articles(category);
+    CREATE TABLE IF NOT EXISTS history (
+      hour TEXT PRIMARY KEY,
+      payload TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS alerts (
+      key TEXT PRIMARY KEY,
+      created_at TEXT,
+      payload TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS watchlist (
+      article_id TEXT PRIMARY KEY,
+      payload TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS marketing_tasks (
+      id TEXT PRIMARY KEY,
+      source_id TEXT,
+      status TEXT,
+      priority TEXT,
+      type TEXT,
+      payload TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+  `);
+  return db;
+}
+
+function sqliteHasData() {
+  const database = db;
+  if (!database) return false;
+  const tables = ["feeds", "articles", "history", "alerts", "watchlist", "marketing_tasks"];
+  return tables.some((table) => database.prepare(`SELECT COUNT(*) AS count FROM ${table}`).get().count > 0);
+}
+
+function alertKey(alert, index) {
+  return alert.key || alert.id || createHash("sha1").update(`${alert.createdAt || index}:${alert.message || ""}`).digest("hex");
+}
+
+function loadSnapshotFromSqlite() {
+  const database = db;
+  const parseRows = (sql) => database.prepare(sql).all().map((row) => JSON.parse(row.payload));
+  const lastRefresh = database.prepare("SELECT value FROM metadata WHERE key = ?").get("lastRefresh");
+  return {
+    version: 2,
+    savedAt: database.prepare("SELECT value FROM metadata WHERE key = ?").get("savedAt")?.value || null,
+    feeds: parseRows("SELECT payload FROM feeds ORDER BY id"),
+    articles: parseRows("SELECT payload FROM articles ORDER BY published_at DESC"),
+    history: parseRows("SELECT payload FROM history ORDER BY hour"),
+    alerts: parseRows("SELECT payload FROM alerts ORDER BY created_at DESC"),
+    watchlist: Object.fromEntries(parseRows("SELECT payload FROM watchlist ORDER BY article_id").map((item) => [item.articleId, item])),
+    marketingTasks: Object.fromEntries(parseRows("SELECT payload FROM marketing_tasks ORDER BY updated_at DESC").map((item) => [item.id, item])),
+    lastRefresh: lastRefresh ? JSON.parse(lastRefresh.value) : null
+  };
+}
+
+function writeSnapshotToSqlite(snapshot) {
+  const database = db;
+  const now = new Date().toISOString();
+  const writeMetadata = database.prepare(`
+    INSERT INTO metadata (key, value, updated_at)
+    VALUES (?, ?, ?)
+    ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at
+  `);
+  const insertFeed = database.prepare(`
+    INSERT INTO feeds (id, category, priority, enabled, payload, updated_at)
+    VALUES (@id, @category, @priority, @enabled, @payload, @updated_at)
+  `);
+  const insertArticle = database.prepare(`
+    INSERT INTO articles (fingerprint, article_id, title, category, source, published_at, payload, updated_at)
+    VALUES (@fingerprint, @article_id, @title, @category, @source, @published_at, @payload, @updated_at)
+  `);
+  const insertHistory = database.prepare("INSERT INTO history (hour, payload, updated_at) VALUES (?, ?, ?)");
+  const insertAlert = database.prepare("INSERT INTO alerts (key, created_at, payload, updated_at) VALUES (?, ?, ?, ?)");
+  const insertWatchlist = database.prepare("INSERT INTO watchlist (article_id, payload, updated_at) VALUES (?, ?, ?)");
+  const insertTask = database.prepare(`
+    INSERT INTO marketing_tasks (id, source_id, status, priority, type, payload, updated_at)
+    VALUES (@id, @source_id, @status, @priority, @type, @payload, @updated_at)
+  `);
+
+  const transaction = database.transaction(() => {
+    for (const table of ["feeds", "articles", "history", "alerts", "watchlist", "marketing_tasks"]) {
+      database.prepare(`DELETE FROM ${table}`).run();
+    }
+    writeMetadata.run("savedAt", snapshot.savedAt || now, now);
+    writeMetadata.run("lastRefresh", JSON.stringify(snapshot.lastRefresh || {}), now);
+    for (const feed of snapshot.feeds || []) {
+      insertFeed.run({
+        id: feed.id,
+        category: feed.category || "",
+        priority: feed.priority || "",
+        enabled: feed.enabled === false ? 0 : 1,
+        payload: JSON.stringify(feed),
+        updated_at: now
+      });
+    }
+    for (const article of snapshot.articles || []) {
+      insertArticle.run({
+        fingerprint: article.fingerprint || article.id,
+        article_id: article.id || article.fingerprint,
+        title: article.title || "",
+        category: article.category || "",
+        source: article.source || "",
+        published_at: article.publishedAt || "",
+        payload: JSON.stringify(article),
+        updated_at: now
+      });
+    }
+    for (const entry of snapshot.history || []) {
+      insertHistory.run(entry.hour, JSON.stringify(entry), now);
+    }
+    for (const [index, alert] of (snapshot.alerts || []).entries()) {
+      insertAlert.run(alertKey(alert, index), alert.createdAt || "", JSON.stringify(alert), now);
+    }
+    for (const item of Object.values(snapshot.watchlist || {})) {
+      insertWatchlist.run(item.articleId, JSON.stringify(item), now);
+    }
+    for (const task of Object.values(snapshot.marketingTasks || {})) {
+      insertTask.run({
+        id: task.id,
+        source_id: task.sourceId || "",
+        status: task.status || "",
+        priority: task.priority || "",
+        type: task.type || "",
+        payload: JSON.stringify(task),
+        updated_at: now
+      });
+    }
+  });
+  transaction();
+}
+
+function applySnapshot(data) {
+  if (Array.isArray(data.feeds) && data.feeds.length) {
+    feeds.splice(0, feeds.length, ...data.feeds.map(normalizeStoredFeed));
+  }
+  if (Array.isArray(data.articles)) {
+    store.articles = new Map(data.articles.map(normalizeStoredArticle).map((article) => [article.fingerprint, article]));
+  }
+  if (Array.isArray(data.history)) store.history = data.history;
+  if (Array.isArray(data.alerts)) store.alerts = data.alerts;
+  if (data.watchlist && typeof data.watchlist === "object") store.watchlist = data.watchlist;
+  if (data.marketingTasks && typeof data.marketingTasks === "object") store.marketingTasks = data.marketingTasks;
+  if (data.lastRefresh && typeof data.lastRefresh === "object") store.lastRefresh = data.lastRefresh;
+  pruneArticlesToActiveTopics();
+}
 
 function normalizeStoredFeed(feed) {
   const id = String(feed.id || topicId(feed.category || feed.name || feed.query || "topic"));
@@ -138,25 +322,23 @@ async function saveStore() {
   const snapshot = snapshotStore();
   saveChain = saveChain
     .catch(() => {})
-    .then(() => writeFile(dataFile, JSON.stringify(snapshot, null, 2), "utf8"));
+    .then(async () => {
+      await initSqliteStore();
+      writeSnapshotToSqlite(snapshot);
+      await writeFile(dataFile, JSON.stringify(snapshot, null, 2), "utf8");
+    });
   await saveChain;
 }
 
 async function loadStore() {
+  await initSqliteStore();
   try {
-    const data = JSON.parse(await readFile(dataFile, "utf8"));
-    if (Array.isArray(data.feeds) && data.feeds.length) {
-      feeds.splice(0, feeds.length, ...data.feeds.map(normalizeStoredFeed));
+    if (sqliteHasData()) {
+      applySnapshot(loadSnapshotFromSqlite());
+      return;
     }
-    if (Array.isArray(data.articles)) {
-      store.articles = new Map(data.articles.map(normalizeStoredArticle).map((article) => [article.fingerprint, article]));
-    }
-    if (Array.isArray(data.history)) store.history = data.history;
-    if (Array.isArray(data.alerts)) store.alerts = data.alerts;
-    if (data.watchlist && typeof data.watchlist === "object") store.watchlist = data.watchlist;
-    if (data.marketingTasks && typeof data.marketingTasks === "object") store.marketingTasks = data.marketingTasks;
-    if (data.lastRefresh && typeof data.lastRefresh === "object") store.lastRefresh = data.lastRefresh;
-    pruneArticlesToActiveTopics();
+    applySnapshot(JSON.parse(await readFile(dataFile, "utf8")));
+    await saveStore();
   } catch (error) {
     if (error.code !== "ENOENT") console.warn(`Unable to load ${dataFile}: ${error.message}`);
     await saveStore();
