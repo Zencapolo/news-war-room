@@ -953,6 +953,26 @@ main {
   margin-top: 0;
 }
 
+.task-detail[open],
+.task-preview[open] {
+  grid-column: 1 / -1;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 10px;
+}
+
+.task-detail[open] {
+  max-height: 360px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.task-preview[open] {
+  max-height: 320px;
+  overflow: hidden;
+}
+
 .task-detail summary,
 .task-preview summary {
   color: var(--blue);
@@ -993,6 +1013,7 @@ main {
 }
 
 .task-detail textarea {
+  min-height: 150px;
   resize: vertical;
   line-height: 1.6;
 }
