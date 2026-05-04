@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "savedAt": "2026-05-04T04:08:38.376Z",
+  "savedAt": "2026-05-04T04:09:38.338Z",
   "feeds": [
     {
       "id": "google-ai",
@@ -10,8 +10,8 @@
       "category": "AI",
       "priority": "realtime",
       "enabled": true,
-      "lastFetchedAt": "2026-05-04T04:08:38.358Z",
-      "nextFetchAt": "2026-05-04T04:09:38.358Z"
+      "lastFetchedAt": "2026-05-04T04:09:38.329Z",
+      "nextFetchAt": "2026-05-04T04:10:38.329Z"
     },
     {
       "id": "google-charity",
@@ -21,8 +21,8 @@
       "category": "慈善",
       "priority": "hourly",
       "enabled": true,
-      "lastFetchedAt": "2026-05-04T04:08:38.354Z",
-      "nextFetchAt": "2026-05-04T05:08:38.354Z"
+      "lastFetchedAt": "2026-05-04T04:09:38.110Z",
+      "nextFetchAt": "2026-05-04T05:09:38.110Z"
     },
     {
       "id": "google-finance",
@@ -32,8 +32,8 @@
       "category": "金融",
       "priority": "hourly",
       "enabled": true,
-      "lastFetchedAt": "2026-05-04T04:08:38.365Z",
-      "nextFetchAt": "2026-05-04T05:08:38.365Z"
+      "lastFetchedAt": "2026-05-04T04:09:38.073Z",
+      "nextFetchAt": "2026-05-04T05:09:38.073Z"
     },
     {
       "id": "google-education",
@@ -43,8 +43,8 @@
       "category": "教育",
       "priority": "realtime",
       "enabled": true,
-      "lastFetchedAt": "2026-05-04T04:08:38.362Z",
-      "nextFetchAt": "2026-05-04T04:09:38.362Z"
+      "lastFetchedAt": "2026-05-04T04:09:38.314Z",
+      "nextFetchAt": "2026-05-04T04:10:38.314Z"
     }
   ],
   "articles": [
@@ -1919,7 +1919,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-30T07:00:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.328Z",
       "fullText": "Agentic AI 算力分工革命：從晶片到機櫃，解讀未來5 年 AI 投資戰略｜產業熱話｜豐雲學堂2026 年 04 月 sinotrade.com.tw",
       "summary": "Agentic AI 算力分工革命：從晶片到機櫃，解讀未來5 年 AI 投資戰略｜產業熱話｜豐雲學堂2026 年 04 月 sinotrade.com.",
       "tags": [
@@ -2633,7 +2633,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-29T02:01:14.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.357Z",
+      "fetchedAt": "2026-05-04T04:09:38.328Z",
       "fullText": "AI代理人9秒刪掉新創公司的資料庫及備份 iThome",
       "summary": "AI代理人9秒刪掉新創公司的資料庫及備份 iThome",
       "tags": [
@@ -2777,7 +2777,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-29T05:57:49.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.357Z",
+      "fetchedAt": "2026-05-04T04:09:38.328Z",
       "fullText": "「AI造黃謠」再引熱議，中國官媒下場斥責9.9元「一鍵脫衣」黑產 BBC",
       "summary": "「AI造黃謠」再引熱議，中國官媒下場斥責9.9元「一鍵脫衣」黑產 BBC",
       "tags": [
@@ -3345,7 +3345,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-28T04:58:24.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "TWNIC 首推「org.tw 數位信任升級計畫」 保護公益捐款 經濟日報",
       "summary": "TWNIC 首推「org.tw 數位信任升級計畫」 保護公益捐款 經濟日報",
       "tags": [
@@ -3488,7 +3488,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-28T04:26:30.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "報稅捐款暗藏陷阱？7成民眾曾遇詐騙、認清「1關鍵」避開假公益 自由財經",
       "summary": "報稅捐款暗藏陷阱？7成民眾曾遇詐騙、認清「1關鍵」避開假公益 自由財經",
       "tags": [
@@ -3920,7 +3920,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-28T09:33:55.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "2026年3月捐款徵信 公民行動影音紀錄資料庫",
       "summary": "2026年3月捐款徵信 公民行動影音紀錄資料庫",
       "tags": [
@@ -4062,7 +4062,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-29T12:38:19.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "環團攜手超商零錢捐募款 獲8位數捐款助理念推廣 公視新聞網PNN",
       "summary": "環團攜手超商零錢捐募款 獲8位數捐款助理念推廣 公視新聞網PNN",
       "tags": [
@@ -4204,7 +4204,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-27T09:53:05.000Z",
-      "fetchedAt": "2026-05-04T04:05:38.356Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "大陸首屆「佛教與現代慈善」研討會 覺培法師談悲智雙運 lnanews.com",
       "summary": "大陸首屆「佛教與現代慈善」研討會 覺培法師談悲智雙運 lnanews.com",
       "tags": [
@@ -5063,7 +5063,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-28T08:06:55.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "七成捐款人曾遇個資詐騙！TWNIC首推org.tw認證，守住報稅季節稅善款 Yahoo新聞",
       "summary": "七成捐款人曾遇個資詐騙！TWNIC首推org.",
       "tags": [
@@ -5207,7 +5207,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-29T07:47:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "傳善獎凝聚社福創新能量 打造永續公益新典範 peopo.org",
       "summary": "傳善獎凝聚社福創新能量 打造永續公益新典範 peopo.org",
       "tags": [
@@ -5350,7 +5350,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-29T07:53:00.000Z",
-      "fetchedAt": "2026-05-04T04:05:38.357Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "GD以音樂創新公益模式 著作權收益化為永續善力量 peopo.org",
       "summary": "GD以音樂創新公益模式 著作權收益化為永續善力量 peopo.org",
       "tags": [
@@ -5493,7 +5493,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-29T07:41:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "張清芳攜群星 台北小巨蛋慈善演唱會 peopo.org",
       "summary": "張清芳攜群星 台北小巨蛋慈善演唱會 peopo.org",
       "tags": [
@@ -5635,7 +5635,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-28T02:17:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "李民橋 數位公益百人 - 香港「愛的資料庫」 peopo.org",
       "summary": "李民橋 數位公益百人 - 香港「愛的資料庫」 peopo.org",
       "tags": [
@@ -7062,7 +7062,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-04-27T08:27:02.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.365Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "股市恐重演1999年「融漲」？投資研究公司：美股或上漲30% 但暴跌風險升 news.cnyes.com",
       "summary": "股市恐重演1999年「融漲」？投資研究公司：美股或上漲30% 但暴跌風險升 news.",
       "tags": [
@@ -7491,7 +7491,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-04-27T17:14:11.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.364Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "台積房賣壓沉重 房市投資人跳船 不動產資金錢進股市 經濟日報",
       "summary": "台積房賣壓沉重 房市投資人跳船 不動產資金錢進股市 經濟日報",
       "tags": [
@@ -8494,7 +8494,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-04-28T05:53:07.000Z",
-      "fetchedAt": "2026-05-04T04:05:38.363Z",
+      "fetchedAt": "2026-05-04T04:09:38.313Z",
       "fullText": "商院教師專業成長工作坊 共議EMI教學精髓 nccu.edu.tw",
       "summary": "商院教師專業成長工作坊 共議EMI教學精髓 nccu.edu.",
       "tags": [
@@ -9493,7 +9493,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-04-29T07:00:47.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.361Z",
+      "fetchedAt": "2026-05-04T04:09:38.313Z",
       "fullText": "「宵禁是辦學特色」？全台69所大學沒自由 學生怒了：被當幼兒園 Yahoo新聞",
       "summary": "「宵禁是辦學特色」？全台69所大學沒自由 學生怒了：被當幼兒園 Yahoo新聞",
       "tags": [
@@ -11201,7 +11201,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-28T12:31:04.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.329Z",
       "fullText": "AI神話要破了？OpenAI爆成長不如預期 晶片與概念股齊跌 news.cnyes.com",
       "summary": "AI神話要破了？OpenAI爆成長不如預期 晶片與概念股齊跌 news.",
       "tags": [
@@ -12489,7 +12489,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-05-04T01:40:15.000Z",
-      "fetchedAt": "2026-05-04T04:00:38.359Z",
+      "fetchedAt": "2026-05-04T04:09:38.313Z",
       "fullText": "【國立中興大學 高中資安探索營】~熱情招生中~僅此一梯 中興大學",
       "summary": "【國立中興大學 高中資安探索營】~熱情招生中~僅此一梯 中興大學",
       "tags": [
@@ -13769,12 +13769,12 @@
       "fingerprint": "fe6ed9a3cf4a2663",
       "title": "教育部全球資訊網 - edu.tw",
       "source": "edu.tw",
-      "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1sU2YycEVNbG5DaUtFY0VoTWhzaGs3dVBxY3hibnhWMDdYa2Z5Qk5LOW8yRWJGZUtsRURfQXBCbUFfNFBMYm9jNkZVR2ZvcnEtb1VaWmFtNXBaRzVfUHlvQnBCTmc0LTVPdGdQZ2dObVJpbkdKQ3dnYnVMYzNfRnM?oc=5",
+      "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1QRUFrOWdjV2xKU08td1FVZ05Zd3JubXRtU3lzSDZVaTJTR1N6VGE2MFAzWm9pY3pKVnk2VjNzSTlQalF4LWF3dUlvME8yWHg1UHdrQXNad2VPRFBSd19SN01kOW9wa3F2bjJ2anJ5emt2anhnN2dvZS1sNzBHeDg?oc=5",
       "category": "教育",
       "feedId": "google-education",
       "feedName": "Google News - 教育",
-      "publishedAt": "2026-04-28T05:53:37.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.362Z",
+      "publishedAt": "2026-04-29T06:50:48.000Z",
+      "fetchedAt": "2026-05-04T04:09:38.314Z",
       "fullText": "教育部全球資訊網 edu.tw",
       "summary": "教育部全球資訊網 edu.tw",
       "tags": [
@@ -13790,7 +13790,7 @@
       "impactReason": "影響力 33 分，來自主題訊號、新聞時效與內容完整度綜合評估。",
       "impactFactors": [
         "主題訊號 1 個：教育",
-        "時效分 0，約 142 小時前發布",
+        "時效分 0，約 117 小時前發布",
         "內容完整度分 0"
       ],
       "marketing": {
@@ -16206,7 +16206,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-04-29T06:26:31.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.361Z",
+      "fetchedAt": "2026-05-04T04:09:38.314Z",
       "fullText": "不能只看輔大東吳！全台最強私立大學「國際排名第一、不輸國立頂大」， 畢業有前途 風傳媒",
       "summary": "不能只看輔大東吳！全台最強私立大學「國際排名第一、不輸國立頂大」， 畢業有前途 風傳媒",
       "tags": [
@@ -18204,7 +18204,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-04-29T18:12:40.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.365Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "Fed鮑爾最後一舞！決議利率連三凍 但四名官員提異議 經濟日報",
       "summary": "Fed鮑爾最後一舞！決議利率連三凍 但四名官員提異議 經濟日報",
       "tags": [
@@ -20054,7 +20054,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-30T08:59:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.357Z",
+      "fetchedAt": "2026-05-04T04:09:38.328Z",
       "fullText": "ChatGPT Image 2.0最詳細操作教學！髮型分析、IG圖卡、LINE貼圖製作一文看懂 天下雜誌",
       "summary": "ChatGPT Image 2.0最詳細操作教學！",
       "tags": [
@@ -20192,11 +20192,11 @@
       "title": "台南推動AI教育 投入逾24億打造智慧學習環境 - tainan.gov.tw",
       "source": "tainan.gov.tw",
       "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE41V3NLOGtub01jMktmdHJmX1ByU2xVUVMwVmtEd1Vfc3RONnZaVnYxa3R1WnFvMEpDaF94TnZMTjdRUUxTVUdCaFU2V1dJMlluTkRuMVVtUkdqLTJXR0RJbTNMWGZNaFp1LS1zbTZn?oc=5",
-      "category": "AI",
-      "feedId": "google-ai",
-      "feedName": "Google News - AI",
+      "category": "教育",
+      "feedId": "google-education",
+      "feedName": "Google News - 教育",
       "publishedAt": "2026-05-01T16:14:12.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.313Z",
       "fullText": "台南推動AI教育 投入逾24億打造智慧學習環境 tainan.gov.tw",
       "summary": "台南推動AI教育 投入逾24億打造智慧學習環境 tainan.gov.",
       "tags": [
@@ -20339,7 +20339,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-05-02T02:37:55.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "AI 人本基金：投入 5,000 萬美元支持非營利組織 OpenAI",
       "summary": "AI 人本基金：投入 5,000 萬美元支持非營利組織 OpenAI",
       "tags": [
@@ -20484,7 +20484,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-28T08:35:59.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.328Z",
       "fullText": "艾狄胥數學問題之一 60 年未解，竟被一名閒暇年輕人用 AI 找出解法 TechNews 科技新報",
       "summary": "艾狄胥數學問題之一 60 年未解，竟被一名閒暇年輕人用 AI 找出解法 TechNews 科技新報",
       "tags": [
@@ -20626,7 +20626,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-30T10:32:25.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.328Z",
       "fullText": "Gogolook 數據總監剖析 AI 轉型，全創碩業師講座談數位時代跨領域人才的核心素養 nccu.edu.tw",
       "summary": "Gogolook 數據總監剖析 AI 轉型，全創碩業師講座談數位時代跨領域人才的核心素養 nccu.edu.",
       "tags": [
@@ -20764,11 +20764,11 @@
       "title": "AI衝擊教育：中國家長怕孩子成了「科舉被廢後的秀才」 - BBC",
       "source": "BBC",
       "link": "https://news.google.com/rss/articles/CBMiZkFVX3lxTE9wVXRHUXVQZll4MVlleHhNSXlmZEdBNlhNaHNMNWY3NzFOVWVOaUE3WU1wM2N3bTA3VFJzZ2F3OUNPS01qdTdFX1UtcWZaM0lDcG1VcVN6ZlA0cDVNdHJTdzZaOEJuZ9IBa0FVX3lxTE1UY1cwVWlGb0xJUUpjUjdUeWF2V3ZBT3k0WkNJenVTT1d3am9pMUlEaHdoMU1ySHBMSDNDQkRfT082cTl0NWFMZ1JfcTgxdXgyLWlhY3R6QVVFdUNkN0FWWnkwNjctTUI5TWdF?oc=5",
-      "category": "教育",
-      "feedId": "google-education",
-      "feedName": "Google News - 教育",
+      "category": "AI",
+      "feedId": "google-ai",
+      "feedName": "Google News - AI",
       "publishedAt": "2026-04-30T00:19:01.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.361Z",
+      "fetchedAt": "2026-05-04T04:09:38.329Z",
       "fullText": "AI衝擊教育：中國家長怕孩子成了「科舉被廢後的秀才」 BBC",
       "summary": "AI衝擊教育：中國家長怕孩子成了「科舉被廢後的秀才」 BBC",
       "tags": [
@@ -20913,7 +20913,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-28T11:15:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.329Z",
       "fullText": "趨勢科技大改組、牽手Anthropic，CEO陳怡樺3招反擊AI「軟體末日」 天下雜誌",
       "summary": "趨勢科技大改組、牽手Anthropic，CEO陳怡樺3招反擊AI「軟體末日」 天下雜誌",
       "tags": [
@@ -21200,7 +21200,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-29T06:36:31.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.329Z",
       "fullText": "自ChatGPT從2022年11月問世以來，新網站內容已有近35%來自AI iThome",
       "summary": "自ChatGPT從2022年11月問世以來，新網站內容已有近35%來自AI iThome",
       "tags": [
@@ -21342,7 +21342,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-30T04:17:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.328Z",
       "fullText": "ChatGPT為何狂提「哥布林」？OpenAI親揭背後竟與人格訓練有關 ETtoday新聞雲",
       "summary": "ChatGPT為何狂提「哥布林」？OpenAI親揭背後竟與人格訓練有關 ETtoday新聞雲",
       "tags": [
@@ -21484,7 +21484,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-30T13:04:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.329Z",
       "fullText": "ChatGPT Image 2.0提示詞 一鍵生成最適合你的髮型一覽表 天下雜誌",
       "summary": "ChatGPT Image 2.0提示詞 一鍵生成最適合你的髮型一覽表 天下雜誌",
       "tags": [
@@ -21626,7 +21626,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-30T11:06:09.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.329Z",
       "fullText": "國巨舉辦2026年AI高峰論壇陳泰銘：革命進行式，「新國巨」不缺席任何AI應用｜股市話題｜豐雲學堂2026 年 05 月 sinotrade.com.tw",
       "summary": "國巨舉辦2026年AI高峰論壇陳泰銘：革命進行式，「新國巨」不缺席任何AI應用｜股市話題｜豐雲學堂2026 年 05 月 sinotrade.com.",
       "tags": [
@@ -21769,7 +21769,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-05-02T12:06:19.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "新竹郵局x愛恆社會福利基金會 透過溫馨洗腳儀式與明信片傳情歡慶母親節送暖慢飛兒 報新聞 Mega News",
       "summary": "新竹郵局x愛恆社會福利基金會 透過溫馨洗腳儀式與明信片傳情歡慶母親節送暖慢飛兒 報新聞 Mega News",
       "tags": [
@@ -21912,7 +21912,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-29T09:02:32.000Z",
-      "fetchedAt": "2026-05-04T03:57:38.341Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "市政新聞－基隆市攜手台灣血液基金會及台北捐血中心表揚捐血英雄 klcg.gov.tw",
       "summary": "市政新聞－基隆市攜手台灣血液基金會及台北捐血中心表揚捐血英雄 klcg.gov.",
       "tags": [
@@ -22055,7 +22055,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-05-02T10:50:23.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "成立五十年的禪光育幼院轉型禪光慈善社會福利基金會 更生新聞網",
       "summary": "成立五十年的禪光育幼院轉型禪光慈善社會福利基金會 更生新聞網",
       "tags": [
@@ -22198,7 +22198,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-30T06:33:51.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "竹縣五月社福系列活動 親子同樂慶母親節 新竹縣政府-社會處",
       "summary": "竹縣五月社福系列活動 親子同樂慶母親節 新竹縣政府-社會處",
       "tags": [
@@ -22341,7 +22341,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-04-30T10:47:49.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.354Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "首例生態保育目的農業公益信託設立 守護受脅物種、增進生物多樣性 農傳媒",
       "summary": "首例生態保育目的農業公益信託設立 守護受脅物種、增進生物多樣性 農傳媒",
       "tags": [
@@ -23340,7 +23340,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-05-03T03:07:16.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.364Z",
+      "fetchedAt": "2026-05-04T04:09:38.072Z",
       "fullText": "ETF成救命稻草？網友曝投資血淚「40萬只剩17萬」 投資人勸：無腦定期定額買這些 Yahoo股市",
       "summary": "ETF成救命稻草？網友曝投資血淚「40萬只剩17萬」 投資人勸：無腦定期定額買這些 Yahoo股市",
       "tags": [
@@ -23484,7 +23484,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-04-30T00:17:01.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.364Z",
+      "fetchedAt": "2026-05-04T04:09:38.072Z",
       "fullText": "新一場的金融危機或正在醞釀——但不會重演2008年的景象 BBC",
       "summary": "新一場的金融危機或正在醞釀——但不會重演2008年的景象 BBC",
       "tags": [
@@ -23628,7 +23628,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-04-30T07:00:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.364Z",
+      "fetchedAt": "2026-05-04T04:09:38.072Z",
       "fullText": "(金融卡已額滿，信用卡尚有名額)【台灣Pay】「台灣Pay繳牌照稅最高享400元回饋」活動(115/4/1-115/5/2) landbank.com.tw",
       "summary": "(金融卡已額滿，信用卡尚有名額)【台灣Pay】「台灣Pay繳牌照稅最高享400元回饋」活動(115/4/1-115/5/2) landbank.com.",
       "tags": [
@@ -23770,7 +23770,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-05-03T13:53:04.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.364Z",
+      "fetchedAt": "2026-05-04T04:09:38.072Z",
       "fullText": "金控首季投資大翻車！海外慘虧逾4000億寫史上第二慘 剩台股獨撐 聯合新聞網",
       "summary": "金控首季投資大翻車！海外慘虧逾4000億寫史上第二慘 剩台股獨撐 聯合新聞網",
       "tags": [
@@ -23914,7 +23914,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-04-30T07:58:28.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.364Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "台股摜破3萬9金融淪海嘯第一排！台新新光金只排第2 它砍逾1.7萬張最慘 自由財經",
       "summary": "台股摜破3萬9金融淪海嘯第一排！台新新光金只排第2 它砍逾1.",
       "tags": [
@@ -24340,7 +24340,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-04-29T19:00:00.000Z",
-      "fetchedAt": "2026-05-04T04:05:38.378Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "金控股利大比拚8家殖利率逾4％ 富邦金揭曉前法人先買起來放- 日報 工商時報",
       "summary": "金控股利大比拚8家殖利率逾4％ 富邦金揭曉前法人先買起來放- 日報 工商時報",
       "tags": [
@@ -24482,7 +24482,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-05-01T22:05:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.365Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "ETF變主秀！2025基金大調查揭祕 台灣人投資偏好全變了 Yahoo新聞",
       "summary": "ETF變主秀！2025基金大調查揭祕 台灣人投資偏好全變了 Yahoo新聞",
       "tags": [
@@ -24627,7 +24627,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-04-30T02:00:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.365Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "沈榮欽國際視野》微知識：全球頂級股市市值最新排名 自由評論網",
       "summary": "沈榮欽國際視野》微知識：全球頂級股市市值最新排名 自由評論網",
       "tags": [
@@ -24769,7 +24769,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-05-03T14:30:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.365Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "5月股市大不秒？ 華爾街魔咒將登場 專家揭「1數據」籲：勿盲目出場 Yahoo股市",
       "summary": "5月股市大不秒？華爾街魔咒將登場 專家揭「1數據」籲：勿盲目出場 Yahoo股市",
       "tags": [
@@ -25055,7 +25055,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-05-02T02:28:18.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.365Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "每月砸16萬！他曝0050長期年投資計畫 喊話「大盤我來撐」 網讚：是真愛 Yahoo股市",
       "summary": "每月砸16萬！他曝0050長期年投資計畫 喊話「大盤我來撐」 網讚：是真愛 Yahoo股市",
       "tags": [
@@ -25342,7 +25342,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-05-03T10:42:47.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.365Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "股市「崩盤」免驚！外媒點名「3檔神股」逢低買進 Yahoo股市",
       "summary": "股市「崩盤」免驚！外媒點名「3檔神股」逢低買進 Yahoo股市",
       "tags": [
@@ -25484,7 +25484,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-05-02T01:57:54.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.365Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "累積超過千萬元資產！他靠3檔ETF+金融股「月領7萬元」曝：考慮2年內退休 Yahoo股市",
       "summary": "累積超過千萬元資產！他靠3檔ETF+金融股「月領7萬元」曝：考慮2年內退休 Yahoo股市",
       "tags": [
@@ -25626,7 +25626,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-05-02T23:30:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.360Z",
+      "fetchedAt": "2026-05-04T04:09:38.313Z",
       "fullText": "教師解聘／聘書非保護傘解聘「溯及既往」翻舊帳風險大| 高教視窗 聯合報數位版",
       "summary": "教師解聘／聘書非保護傘解聘「溯及既往」翻舊帳風險大| 高教視窗 聯合報數位版",
       "tags": [
@@ -25770,7 +25770,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-05-01T04:54:31.000Z",
-      "fetchedAt": "2026-05-04T03:52:07.906Z",
+      "fetchedAt": "2026-05-04T04:09:38.313Z",
       "fullText": "快領1500元！「終身學習券」6歲以上今起登記 登記方式、重要時程一次看 Yahoo新聞",
       "summary": "快領1500元！「終身學習券」6歲以上今起登記 登記方式、重要時程一次看 Yahoo新聞",
       "tags": [
@@ -25912,7 +25912,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-05-01T02:16:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.361Z",
+      "fetchedAt": "2026-05-04T04:09:38.313Z",
       "fullText": "終身學習券、館所通行票登記開跑最高抵1500元學費| 生活 中央社 CNA",
       "summary": "終身學習券、館所通行票登記開跑最高抵1500元學費| 生活 中央社 CNA",
       "tags": [
@@ -26054,7 +26054,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-05-01T07:00:00.000Z",
-      "fetchedAt": "2026-05-04T04:05:38.363Z",
+      "fetchedAt": "2026-05-04T04:09:38.313Z",
       "fullText": "政府補助學習＋免費逛博物館雙福利！2026「終身學習券」與「館所通行票」登記抽籤全攻略 康健雜誌",
       "summary": "政府補助學習＋免費逛博物館雙福利！2026「終身學習券」與「館所通行票」登記抽籤全攻略 康健雜誌",
       "tags": [
@@ -26200,7 +26200,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-04-29T00:45:00.000Z",
-      "fetchedAt": "2026-05-04T04:05:38.363Z",
+      "fetchedAt": "2026-05-04T04:09:38.313Z",
       "fullText": "臺師大揭教育災難、鐵飯碗不再！百年師培名校為何無懼AI少子化 城市學",
       "summary": "臺師大揭教育災難、鐵飯碗不再！百年師培名校為何無懼AI少子化 城市學",
       "tags": [
@@ -26343,7 +26343,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-04-30T23:30:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.361Z",
+      "fetchedAt": "2026-05-04T04:09:38.313Z",
       "fullText": "政府發錢了！115年終身學習券今開搶「抽中現省1500元」，申請資格、 登記懶人包一次看 風傳媒",
       "summary": "政府發錢了！115年終身學習券今開搶「抽中現省1500元」，申請資格、 登記懶人包一次看 風傳媒",
       "tags": [
@@ -26488,7 +26488,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-05-01T01:18:59.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.361Z",
+      "fetchedAt": "2026-05-04T04:09:38.313Z",
       "fullText": "踢爆老師裸體和比基尼妹喝花酒 教師工會理事長「侵犯隱私」要賠錢 自由時報",
       "summary": "踢爆老師裸體和比基尼妹喝花酒 教師工會理事長「侵犯隱私」要賠錢 自由時報",
       "tags": [
@@ -26772,7 +26772,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-05-01T03:34:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.361Z",
+      "fetchedAt": "2026-05-04T04:09:38.314Z",
       "fullText": "終身學習票券申請QA一次看最高抵1500元學費、11間博物館免費參觀| 生活 中央社 CNA",
       "summary": "終身學習票券申請QA一次看最高抵1500元學費、11間博物館免費參觀| 生活 中央社 CNA",
       "tags": [
@@ -26916,7 +26916,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-05-03T07:42:55.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.361Z",
+      "fetchedAt": "2026-05-04T04:09:38.314Z",
       "fullText": "整理包／價值千元、幾乎全民都能抽！終身學習票券是什麼？登記方式、怎麼用？重點一次看| 整理包| 專題 經濟日報",
       "summary": "整理包／價值千元、幾乎全民都能抽！終身學習票券是什麼？",
       "tags": [
@@ -27058,7 +27058,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-04-29T07:29:19.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.362Z",
+      "fetchedAt": "2026-05-04T04:09:38.314Z",
       "fullText": "終身學習票券5/1開放登記！抽中免費參觀博物館、折抵大學學費 QA一文搞懂｜Yahoo補助通 Yahoo新聞",
       "summary": "終身學習票券5/1開放登記！抽中免費參觀博物館、折抵大學學費 QA一文搞懂｜Yahoo補助通 Yahoo新聞",
       "tags": [
@@ -27345,7 +27345,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-05-01T08:15:05.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.329Z",
       "fullText": "AI助理重大失誤9秒刪光資料庫 租車業者氣炸：故意的！ Yahoo新聞",
       "summary": "AI助理重大失誤9秒刪光資料庫 租車業者氣炸：故意的！Yahoo新聞",
       "tags": [
@@ -27487,7 +27487,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-29T03:55:36.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.329Z",
       "fullText": "心理系專題演講 張家銘解析TAD形成機制與AI研究趨勢 nccu.edu.tw",
       "summary": "心理系專題演講 張家銘解析TAD形成機制與AI研究趨勢 nccu.edu.",
       "tags": [
@@ -27629,7 +27629,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-29T09:26:57.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.329Z",
       "fullText": "Mythos模型問世，臺灣兩大資安廠商警示AI將使攻擊門檻大幅降低 iThome",
       "summary": "Mythos模型問世，臺灣兩大資安廠商警示AI將使攻擊門檻大幅降低 iThome",
       "tags": [
@@ -27913,7 +27913,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-04-30T10:25:54.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.362Z",
+      "fetchedAt": "2026-05-04T04:09:38.314Z",
       "fullText": "整理包／115國中教育會考最後衝刺！考場時程、A++高分關鍵全掌握| 115會考倒數| 文教 聯合新聞網",
       "summary": "整理包／115國中教育會考最後衝刺！考場時程、A++高分關鍵全掌握| 115會考倒數| 文教 聯合新聞網",
       "tags": [
@@ -28055,7 +28055,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-04-29T02:00:00.000Z",
-      "fetchedAt": "2026-05-04T03:51:59.730Z",
+      "fetchedAt": "2026-05-04T04:09:38.328Z",
       "fullText": "AI自己規劃任務更聰明！ChatGPT全新模型GPT-5.5特色亮點一次看 SOGI手機王",
       "summary": "AI自己規劃任務更聰明！ChatGPT全新模型GPT-5.",
       "tags": [
@@ -28341,7 +28341,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-05-01T18:34:18.000Z",
-      "fetchedAt": "2026-05-04T03:52:07.913Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "特別報導／和泰集團yoxi移動公益幸福行動 捐贈千趟接送服務協助弱勢兒少 Yahoo - 汽機車",
       "summary": "特別報導／和泰集團yoxi移動公益幸福行動 捐贈千趟接送服務協助弱勢兒少 Yahoo - 汽機車",
       "tags": [
@@ -28357,7 +28357,7 @@
       "impactReason": "影響力 33 分，來自主題訊號、新聞時效與內容完整度綜合評估。",
       "impactFactors": [
         "主題訊號 1 個：公益",
-        "時效分 0，約 57 小時前發布",
+        "時效分 0，約 58 小時前發布",
         "內容完整度分 0"
       ],
       "marketing": {
@@ -28629,7 +28629,7 @@
       "feedId": "google-charity",
       "feedName": "Google News - 慈善",
       "publishedAt": "2026-05-01T12:57:33.000Z",
-      "fetchedAt": "2026-05-04T03:52:07.913Z",
+      "fetchedAt": "2026-05-04T04:09:38.109Z",
       "fullText": "第八屆「和泰公益夢想家」報名開跑！攜手永續青年共譜ESG新未來 Yahoo - 汽機車",
       "summary": "第八屆「和泰公益夢想家」報名開跑！攜手永續青年共譜ESG新未來 Yahoo - 汽機車",
       "tags": [
@@ -29202,7 +29202,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-05-03T07:26:17.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.364Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "日本匯率干預背後顯極限，160是常態？ 日經中文網",
       "summary": "日本匯率干預背後顯極限，160是常態？日經中文網",
       "tags": [
@@ -29344,7 +29344,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-05-03T13:10:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.364Z",
+      "fetchedAt": "2026-05-04T04:09:38.073Z",
       "fullText": "戰火越燒股市越強？台股今年猛飆34% 外媒揭背後關鍵 Yahoo股市",
       "summary": "戰火越燒股市越強？台股今年猛飆34% 外媒揭背後關鍵 Yahoo股市",
       "tags": [
@@ -29628,7 +29628,7 @@
       "feedId": "google-education",
       "feedName": "Google News - 教育",
       "publishedAt": "2026-05-01T01:08:02.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.361Z",
+      "fetchedAt": "2026-05-04T04:09:38.313Z",
       "fullText": "國教署深耕書法教育 全臺逾百校展現多元成效 edu.tw",
       "summary": "國教署深耕書法教育 全臺逾百校展現多元成效 edu.tw",
       "tags": [
@@ -30772,7 +30772,7 @@
       "feedId": "google-ai",
       "feedName": "Google News - AI",
       "publishedAt": "2026-05-03T02:00:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.358Z",
+      "fetchedAt": "2026-05-04T04:09:38.328Z",
       "fullText": "望聞問AI／人工智慧當「診前軍師」民眾揭優點 醫示警：仍有誤判風險 健康醫療網",
       "summary": "望聞問AI／人工智慧當「診前軍師」民眾揭優點 醫示警：仍有誤判風險 健康醫療網",
       "tags": [
@@ -31488,7 +31488,7 @@
       "feedId": "google-finance",
       "feedName": "Google News - 金融",
       "publishedAt": "2026-04-30T07:00:00.000Z",
-      "fetchedAt": "2026-05-04T04:08:38.364Z",
+      "fetchedAt": "2026-05-04T04:09:38.072Z",
       "fullText": "富蘭克林坦伯頓全球投資系列-全球基金美元 A (Ydis)股 的總覽 | 鉅亨網 fund.cnyes.com",
       "summary": "富蘭克林坦伯頓全球投資系列-全球基金美元 A (Ydis)股 的總覽 | 鉅亨網 fund.cnyes.",
       "tags": [
@@ -32077,6 +32077,6 @@
   "lastRefresh": {
     "refreshedFeeds": 0,
     "errors": [],
-    "refreshedAt": "2026-05-04T04:08:38.376Z"
+    "refreshedAt": "2026-05-04T04:09:38.338Z"
   }
 }
