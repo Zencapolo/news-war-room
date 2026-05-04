@@ -718,7 +718,7 @@ async function handleTopicAction(event) {
 function handleBriefAction(event) {
   const button = event.target.closest("[data-brief-action='focus-news']");
   if (!button) return;
-  const article = document.querySelector(`[data-article-id="${CSS.escape(button.dataset.articleId)}"]`);
+  const article = elements.newsList.querySelector(`.news-card[data-article-id="${CSS.escape(button.dataset.articleId)}"]`);
   if (!article) return;
   article.scrollIntoView({ behavior: "smooth", block: "center" });
   article.classList.add("is-focused");
