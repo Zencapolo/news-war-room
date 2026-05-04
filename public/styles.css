@@ -464,10 +464,17 @@ main {
 }
 
 .marketing-task-list {
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: 1fr;
   align-items: start;
   overflow-x: visible;
   padding-bottom: 0;
+}
+
+.task-secondary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  align-items: start;
 }
 
 .task-filter-bar {
@@ -495,6 +502,63 @@ main {
   border-radius: 8px;
   background: var(--surface-2);
   padding: 10px;
+}
+
+.task-column.is-primary {
+  border-color: #b8dff0;
+  background: #e9f4ff;
+}
+
+.task-column.is-primary .task-column-list {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  max-height: 430px;
+}
+
+.task-column.is-secondary {
+  gap: 8px;
+  padding: 8px;
+}
+
+.task-column.is-secondary h3 {
+  font-size: 14px;
+}
+
+.task-column.is-secondary header span {
+  min-width: 24px;
+  height: 24px;
+  font-size: 13px;
+}
+
+.task-column.is-secondary .task-column-list {
+  max-height: 320px;
+}
+
+.task-column.is-secondary .marketing-task {
+  gap: 8px;
+  padding: 10px;
+}
+
+.task-column.is-secondary .marketing-task h3 {
+  margin: 6px 0 4px;
+  font-size: 14px;
+  -webkit-line-clamp: 2;
+}
+
+.task-column.is-secondary .marketing-task p,
+.task-column.is-secondary .marketing-task small,
+.task-column.is-secondary .tag-row,
+.task-column.is-secondary .task-folders {
+  display: none;
+}
+
+.task-column.is-secondary .task-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.task-column.is-secondary .task-actions button,
+.task-column.is-secondary .task-actions select {
+  min-height: 30px;
+  font-size: 12px;
 }
 
 .task-column header {
@@ -1268,6 +1332,10 @@ summary {
   .split-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .task-secondary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 720px) {
@@ -1294,6 +1362,7 @@ summary {
   .task-folders,
   .task-detail-grid,
   .marketing-task-list,
+  .task-secondary-grid,
   .split-grid,
   .detail-grid {
     grid-template-columns: 1fr;

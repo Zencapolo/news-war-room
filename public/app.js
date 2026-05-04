@@ -557,6 +557,21 @@ function renderMarketingTaskCard(task) {
   `;
 }
 
+function renderTaskColumn(status, tasks, className = "") {
+  const columnTasks = tasks.filter((task) => task.status === status);
+  return `
+    <section class="task-column ${className}">
+      <header>
+        <h3>${status}</h3>
+        <span>${columnTasks.length}</span>
+      </header>
+      <div class="task-column-list">
+        ${columnTasks.length ? columnTasks.map(renderMarketingTaskCard).join("") : '<div class="empty compact">此狀態目前沒有任務。</div>'}
+      </div>
+    </section>
+  `;
+}
+
 function renderMarketingTasks() {
   const tasks = state.payload.marketingTasks || [];
   renderTaskTypeFilter(tasks);
@@ -574,20 +589,13 @@ function renderMarketingTasks() {
     return;
   }
 
-  elements.marketingTaskList.innerHTML = taskStatuses.map((status) => {
-    const columnTasks = filteredTasks.filter((task) => task.status === status);
-    return `
-      <section class="task-column">
-        <header>
-          <h3>${status}</h3>
-          <span>${columnTasks.length}</span>
-        </header>
-        <div class="task-column-list">
-          ${columnTasks.length ? columnTasks.map(renderMarketingTaskCard).join("") : '<div class="empty compact">此狀態目前沒有任務。</div>'}
-        </div>
-      </section>
-    `;
-  }).join("");
+  const [primaryStatus, ...secondaryStatuses] = taskStatuses;
+  elements.marketingTaskList.innerHTML = `
+    ${renderTaskColumn(primaryStatus, filteredTasks, "is-primary")}
+    <div class="task-secondary-grid">
+      ${secondaryStatuses.map((status) => renderTaskColumn(status, filteredTasks, "is-secondary")).join("")}
+    </div>
+  `;
   return;
 
 }
