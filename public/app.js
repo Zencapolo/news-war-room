@@ -531,7 +531,7 @@ function renderMarketingTaskCard(task) {
             </label>
           </div>
           <label class="task-draft">內容草稿
-            <textarea data-task-field="draft" data-task-id="${escapeHtml(task.id)}" rows="6" placeholder="在這裡撰寫貼文、文章開頭、EDM 或短影音腳本">${escapeHtml(task.draft || "")}</textarea>
+            <textarea data-task-field="draft" data-task-id="${escapeHtml(task.id)}" rows="10" placeholder="在這裡撰寫貼文、文章開頭、EDM 或短影音腳本">${escapeHtml(task.draft || "")}</textarea>
           </label>
           <button type="button" data-task-action="save-detail" data-task-id="${escapeHtml(task.id)}">保存詳情</button>
         </details>

@@ -963,7 +963,7 @@ main {
 }
 
 .task-detail[open] {
-  max-height: 360px;
+  max-height: min(680px, 76vh);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -1013,9 +1013,16 @@ main {
 }
 
 .task-detail textarea {
-  min-height: 150px;
   resize: vertical;
   line-height: 1.6;
+}
+
+.task-draft textarea {
+  min-height: 260px;
+  max-height: 420px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  white-space: pre-wrap;
 }
 
 .task-detail button {
