@@ -161,35 +161,38 @@
           <div class="marketing-task-list" id="marketingTaskList"></div>
         </section>
 
-        <section class="panel" id="search">
+        <section class="panel search-panel is-collapsed" id="search">
           <div class="section-heading">
             <div>
               <p class="eyebrow">Vector Search</p>
               <h2>語義檢索與新聞流</h2>
             </div>
+            <button class="secondary-button" id="toggleSearchButton" type="button" aria-expanded="false" aria-controls="newsSearchContent">展開新聞檢索</button>
           </div>
-          <div class="search-box">
-            <input id="newsSearch" type="search" placeholder="搜尋新聞、主題、來源或趨勢標籤">
-            <select id="categoryFilter" aria-label="分類篩選">
-              <option value="all">全部分類</option>
-            </select>
-            <select id="tagFilter" aria-label="標籤篩選">
-              <option value="all">全部標籤</option>
-            </select>
-            <select id="quickFilter" aria-label="快速篩選">
-              <option value="all">全部新聞</option>
-              <option value="high-impact">高影響力</option>
-              <option value="negative">負面訊號</option>
-            </select>
-            <select id="sortOrder" aria-label="排序方式">
-              <option value="latest">最新優先</option>
-              <option value="impact">影響力最高</option>
-              <option value="sentiment">負面優先</option>
-              <option value="semantic">語義分數最高</option>
-            </select>
-            <button class="secondary-button" id="clearFiltersButton" type="button">清除篩選</button>
+          <div id="newsSearchContent">
+            <div class="search-box">
+              <input id="newsSearch" type="search" placeholder="搜尋新聞、主題、來源或趨勢標籤">
+              <select id="categoryFilter" aria-label="分類篩選">
+                <option value="all">全部分類</option>
+              </select>
+              <select id="tagFilter" aria-label="標籤篩選">
+                <option value="all">全部標籤</option>
+              </select>
+              <select id="quickFilter" aria-label="快速篩選">
+                <option value="all">全部新聞</option>
+                <option value="high-impact">高影響力</option>
+                <option value="negative">負面訊號</option>
+              </select>
+              <select id="sortOrder" aria-label="排序方式">
+                <option value="latest">最新優先</option>
+                <option value="impact">影響力最高</option>
+                <option value="sentiment">負面優先</option>
+                <option value="semantic">語義分數最高</option>
+              </select>
+              <button class="secondary-button" id="clearFiltersButton" type="button">清除篩選</button>
+            </div>
+            <div class="news-list" id="newsList"></div>
           </div>
-          <div class="news-list" id="newsList"></div>
         </section>
 
         <section class="split-grid" id="alerts">

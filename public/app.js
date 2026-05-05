@@ -9,7 +9,8 @@ const state = {
   trendRange: "24h",
   taskStatus: "all",
   taskPriority: "all",
-  taskType: "all"
+  taskType: "all",
+  searchOpen: false
 };
 
 const elements = {
@@ -48,6 +49,8 @@ const elements = {
   quickFilter: document.querySelector("#quickFilter"),
   sortOrder: document.querySelector("#sortOrder"),
   clearFiltersButton: document.querySelector("#clearFiltersButton"),
+  searchPanel: document.querySelector("#search"),
+  toggleSearchButton: document.querySelector("#toggleSearchButton"),
   trendKeyword: document.querySelector("#trendKeyword"),
   trendRange: document.querySelector("#trendRange"),
   newsList: document.querySelector("#newsList"),
@@ -579,6 +582,21 @@ function renderTaskColumn(status, tasks, className = "") {
   `;
 }
 
+function renderSecondaryTaskGroup(statuses, tasks) {
+  const count = statuses.reduce((sum, status) => sum + tasks.filter((task) => task.status === status).length, 0);
+  return `
+    <details class="task-secondary-details">
+      <summary>
+        <span>其他任務狀態</span>
+        <b>${count}</b>
+      </summary>
+      <div class="task-secondary-grid">
+        ${statuses.map((status) => renderTaskColumn(status, tasks, "is-secondary")).join("")}
+      </div>
+    </details>
+  `;
+}
+
 function renderMarketingTasks() {
   const tasks = state.payload.marketingTasks || [];
   renderTaskTypeFilter(tasks);
@@ -599,9 +617,7 @@ function renderMarketingTasks() {
   const [primaryStatus, ...secondaryStatuses] = taskStatuses;
   elements.marketingTaskList.innerHTML = `
     ${renderTaskColumn(primaryStatus, filteredTasks, "is-primary")}
-    <div class="task-secondary-grid">
-      ${secondaryStatuses.map((status) => renderTaskColumn(status, filteredTasks, "is-secondary")).join("")}
-    </div>
+    ${renderSecondaryTaskGroup(secondaryStatuses, filteredTasks)}
   `;
   return;
 
@@ -669,6 +685,7 @@ function renderAlerts() {
 function renderAll() {
   renderSummary();
   renderControls();
+  setSearchPanelOpen(state.searchOpen);
   renderBrief();
   renderTopics();
   renderTrends();
@@ -678,6 +695,15 @@ function renderAll() {
   renderNews();
   renderTimeline();
   renderAlerts();
+}
+
+function setSearchPanelOpen(open) {
+  state.searchOpen = Boolean(open);
+  elements.searchPanel?.classList.toggle("is-collapsed", !state.searchOpen);
+  if (elements.toggleSearchButton) {
+    elements.toggleSearchButton.textContent = state.searchOpen ? "收合新聞檢索" : "展開新聞檢索";
+    elements.toggleSearchButton.setAttribute("aria-expanded", String(state.searchOpen));
+  }
 }
 
 async function addTopic(event) {
@@ -725,6 +751,7 @@ async function handleTopicAction(event) {
 function handleBriefAction(event) {
   const button = event.target.closest("[data-brief-action='focus-news']");
   if (!button) return;
+  setSearchPanelOpen(true);
   const article = elements.newsList.querySelector(`.news-card[data-article-id="${CSS.escape(button.dataset.articleId)}"]`);
   if (!article) return;
   article.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -791,6 +818,7 @@ async function handleDailyMarketingAction(event) {
   const button = event.target.closest("button[data-marketing-action]");
   if (!button) return;
   if (button.dataset.marketingAction === "focus-news") {
+    setSearchPanelOpen(true);
     let article = elements.newsList.querySelector(`.news-card[data-article-id="${CSS.escape(button.dataset.sourceId)}"]`);
     if (!article) {
       state.query = "";
@@ -1012,12 +1040,16 @@ elements.trendRange.addEventListener("change", (event) => {
   loadDashboard(false);
 });
 elements.clearFiltersButton.addEventListener("click", clearFilters);
+elements.toggleSearchButton.addEventListener("click", () => {
+  setSearchPanelOpen(!state.searchOpen);
+});
 elements.trendGrid.addEventListener("click", (event) => {
   const card = event.target.closest(".trend-card");
   if (!card) return;
   state.tag = card.dataset.tag;
   state.query = "";
   elements.newsSearch.value = "";
+  setSearchPanelOpen(true);
   loadDashboard(false).then(() => document.querySelector("#search")?.scrollIntoView({ behavior: "smooth" }));
 });
 elements.trendGrid.addEventListener("keydown", (event) => {
