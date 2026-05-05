@@ -885,6 +885,8 @@ main {
 .marketing-task {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  align-items: start;
   gap: 12px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -928,13 +930,20 @@ main {
 .task-actions {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: min-content;
+  align-content: start;
+  align-items: start;
   gap: 6px;
+  height: max-content;
 }
 
 .task-actions select,
 .task-actions button {
+  align-self: start;
   width: 100%;
+  height: 32px;
   min-height: 32px;
+  max-height: 32px;
   padding: 0 8px;
   font-size: 13px;
 }
