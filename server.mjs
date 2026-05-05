@@ -723,13 +723,17 @@ async function refreshFeeds({ force = false } = {}) {
 
 function recordHistory() {
   const byTag = {};
+  const byTopic = {};
   const hour = new Date().toISOString().slice(0, 13) + ":00:00.000Z";
   for (const item of store.articles.values()) {
     for (const tag of item.tags) byTag[tag] = (byTag[tag] || 0) + 1;
+    if (item.category) byTopic[item.category] = (byTopic[item.category] || 0) + 1;
   }
   const previous = store.history.at(-1);
-  if (previous?.hour === hour) previous.byTag = byTag;
-  else store.history.push({ hour, byTag });
+  if (previous?.hour === hour) {
+    previous.byTag = byTag;
+    previous.byTopic = byTopic;
+  } else store.history.push({ hour, byTag, byTopic });
   store.history = store.history.slice(-168);
 }
 
@@ -1020,20 +1024,20 @@ function buildDailyReport(allItems, hotTags) {
 
 function buildTrendTimeline({ tag = "", range = "24h" } = {}) {
   const hours = range === "7d" ? 168 : 24;
-  const latestHistory = store.history.at(-1)?.byTag || {};
-  const historyTags = new Set();
-  for (const entry of store.history) {
-    for (const itemTag of Object.keys(entry.byTag || {})) historyTags.add(itemTag);
-  }
-  for (const article of store.articles.values()) {
-    for (const itemTag of article.tags || []) historyTags.add(itemTag);
-  }
-  const availableTags = [...historyTags]
-    .map((name) => ({ name, count: latestHistory[name] || 0 }))
-    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
-    .slice(0, 30);
+  const enabledTopics = publicTopics().filter((topic) => topic.enabled);
+  const active = activeCategories();
+  const all = [...store.articles.values()].filter((item) => active.has(item.category) || item.feedId === "fallback");
+  const availableTags = enabledTopics
+    .map((topic) => ({ name: topic.name, count: all.filter((item) => item.category === topic.name).length }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "zh-Hant"));
   const selectedTag = availableTags.some((item) => item.name === tag) ? tag : availableTags[0]?.name || "";
-  const byHour = new Map(store.history.map((entry) => [entry.hour, entry.byTag || {}]));
+  const legacyTopicTags = {
+    AI: "人工智慧",
+    慈善: "慈善公益",
+    金融: "金融市場",
+    教育: "教育學習"
+  };
+  const byHour = new Map(store.history.map((entry) => [entry.hour, entry]));
   const now = new Date();
   now.setUTCMinutes(0, 0, 0);
   const points = [];
@@ -1041,7 +1045,10 @@ function buildTrendTimeline({ tag = "", range = "24h" } = {}) {
   for (let index = hours - 1; index >= 0; index -= 1) {
     const time = new Date(now.getTime() - index * 60 * 60 * 1000);
     const hour = time.toISOString().slice(0, 13) + ":00:00.000Z";
-    const count = selectedTag ? byHour.get(hour)?.[selectedTag] || 0 : 0;
+    const entry = byHour.get(hour);
+    const count = selectedTag
+      ? entry?.byTopic?.[selectedTag] || entry?.byTag?.[selectedTag] || entry?.byTag?.[legacyTopicTags[selectedTag]] || 0
+      : 0;
     points.push({ hour, count });
   }
 
