@@ -777,7 +777,7 @@ function filterArticles({ q = "", category = "all", tag = "all", filter = "all",
       const matchesQuery = !query || haystack.includes(query.toLowerCase()) || item.semanticScore >= 0.16;
       const matchesActive = active.has(item.category) || item.feedId === "fallback";
       const matchesCategory = category === "all" || item.category === category;
-      const matchesTag = tag === "all" || item.tags.includes(tag);
+      const matchesTag = tag === "all" || item.tags.includes(tag) || item.category === tag;
       const matchesFilter =
         filter === "high-impact" ? item.impact >= HIGH_IMPACT_THRESHOLD :
         filter === "negative" ? item.sentiment.value < -15 :
@@ -791,6 +791,31 @@ function filterArticles({ q = "", category = "all", tag = "all", filter = "all",
       if (queryVector && b.semanticScore !== a.semanticScore) return b.semanticScore - a.semanticScore;
       return new Date(b.publishedAt) - new Date(a.publishedAt);
     });
+}
+
+function buildTopicTrends(items) {
+  const enabledTopics = publicTopics().filter((topic) => topic.enabled);
+  const maxTopicCount = Math.max(
+    1,
+    ...enabledTopics.map((topic) => items.filter((item) => item.category === topic.name).length)
+  );
+
+  return enabledTopics
+    .map((topic) => {
+      const topicItems = items.filter((item) => item.category === topic.name);
+      const count = topicItems.length;
+      const highImpactCount = topicItems.filter((item) => item.impact >= HIGH_IMPACT_THRESHOLD).length;
+      const averageImpact = topicItems.reduce((sum, item) => sum + item.impact, 0) / Math.max(1, topicItems.length);
+      const heat = Math.round(12 + (count / maxTopicCount) * 58 + highImpactCount * 4 + averageImpact * 0.22);
+      return {
+        name: topic.name,
+        count,
+        heat: Math.min(100, heat),
+        query: topic.query,
+        priority: topic.priority
+      };
+    })
+    .sort((a, b) => b.heat - a.heat || b.count - a.count || a.name.localeCompare(b.name, "zh-Hant"));
 }
 
 function publicWatchlist() {
@@ -1041,28 +1066,13 @@ function buildDashboard(query) {
   const items = filterArticles(query);
   const active = activeCategories();
   const all = [...store.articles.values()].filter((item) => active.has(item.category) || item.feedId === "fallback");
-  const tagCounts = {};
   const categoryCounts = {};
 
   for (const item of items) {
     categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
-    for (const tag of item.tags) tagCounts[tag] = (tagCounts[tag] || 0) + 1;
   }
 
-  const maxTagCount = Math.max(1, ...Object.values(tagCounts));
-  const hotTags = Object.entries(tagCounts)
-    .map(([name, count]) => {
-      const taggedItems = items.filter((item) => item.tags.includes(name));
-      const highImpactCount = taggedItems.filter((item) => item.impact >= HIGH_IMPACT_THRESHOLD).length;
-      const averageImpact = taggedItems.reduce((sum, item) => sum + item.impact, 0) / Math.max(1, taggedItems.length);
-      const heat = Math.round(12 + (count / maxTagCount) * 58 + highImpactCount * 4 + averageImpact * 0.22);
-      return {
-        name,
-        count,
-        heat: Math.min(100, heat)
-      };
-    })
-    .sort((a, b) => b.heat - a.heat);
+  const hotTags = buildTopicTrends(items);
 
   return {
     updatedAt: new Date().toISOString(),
