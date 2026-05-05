@@ -258,8 +258,14 @@ function renderDailyReport() {
     : "<li>目前沒有明顯高風險新聞。</li>";
 
   const trends = report.trends.length
-    ? report.trends.map((item) => `<span class="tag muted">${escapeHtml(item.name)} ${item.heat}</span>`).join("")
-    : '<span class="tag muted">尚無趨勢</span>';
+    ? report.trends.map((item) => `
+      <button class="daily-trend-item" type="button" data-daily-trend="${escapeHtml(item.name)}">
+        <span>${escapeHtml(item.name)}</span>
+        <strong>熱度 ${item.heat}</strong>
+        <small>${number.format(item.count || 0)} 次出現 · ${escapeHtml(trendMessage(item))}</small>
+      </button>
+    `).join("")
+    : '<div class="empty compact">尚無趨勢。</div>';
 
   const tracked = report.tracked.length
     ? report.tracked.map((item) => `<li>${escapeHtml(item.status)} · ${escapeHtml(item.article.title)}</li>`).join("")
@@ -280,7 +286,7 @@ function renderDailyReport() {
     <div class="daily-columns">
       <section>
         <h3>趨勢上升</h3>
-        <div class="tag-row">${trends}</div>
+        <div class="daily-trend-list">${trends}</div>
       </section>
       <section>
         <h3>風險提醒</h3>
@@ -322,8 +328,14 @@ function renderMarketingDailyReport() {
     ? report.risks.map((item) => `<li><strong>${escapeHtml(item.category)}</strong> ${escapeHtml(item.title)} <span>影響力 ${item.impact}</span></li>`).join("")
     : "<li>目前沒有明顯高風險新聞。</li>";
   const trends = report.trends.length
-    ? report.trends.map((item) => `<span class="tag muted">${escapeHtml(item.name)} ${item.heat}</span>`).join("")
-    : '<span class="tag muted">尚無趨勢</span>';
+    ? report.trends.map((item) => `
+      <button class="daily-trend-item" type="button" data-daily-trend="${escapeHtml(item.name)}">
+        <span>${escapeHtml(item.name)}</span>
+        <strong>熱度 ${item.heat}</strong>
+        <small>${number.format(item.count || 0)} 次出現 · ${escapeHtml(trendMessage(item))}</small>
+      </button>
+    `).join("")
+    : '<div class="empty compact">尚無趨勢。</div>';
   const tracked = report.tracked.length
     ? report.tracked.map((item) => `<li>${escapeHtml(item.status)} · ${escapeHtml(item.article.title)}</li>`).join("")
     : "<li>尚無追蹤新聞。</li>";
@@ -364,7 +376,7 @@ function renderMarketingDailyReport() {
     <div class="daily-columns">
       <section>
         <h3>趨勢上升</h3>
-        <div class="tag-row">${trends}</div>
+        <div class="daily-trend-list">${trends}</div>
       </section>
       <section>
         <h3>風險提醒</h3>
@@ -815,6 +827,19 @@ async function handleWatchAction(event) {
 }
 
 async function handleDailyMarketingAction(event) {
+  const trendButton = event.target.closest("button[data-daily-trend]");
+  if (trendButton) {
+    state.query = "";
+    state.category = "all";
+    state.tag = trendButton.dataset.dailyTrend;
+    state.filter = "all";
+    elements.newsSearch.value = "";
+    setSearchPanelOpen(true);
+    await loadDashboard(false);
+    document.querySelector("#search")?.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+
   const button = event.target.closest("button[data-marketing-action]");
   if (!button) return;
   if (button.dataset.marketingAction === "focus-news") {

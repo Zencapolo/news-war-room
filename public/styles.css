@@ -769,6 +769,50 @@ main {
   font-weight: 800;
 }
 
+.daily-trend-list {
+  display: grid;
+  gap: 8px;
+}
+
+.daily-trend-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 10px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--ink);
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.daily-trend-item:hover,
+.daily-trend-item:focus {
+  border-color: var(--blue);
+  background: #e9f4ff;
+  outline: 0;
+  transform: translateY(-1px);
+}
+
+.daily-trend-item span,
+.daily-trend-item strong {
+  min-width: 0;
+  font-weight: 900;
+}
+
+.daily-trend-item strong {
+  color: var(--blue);
+}
+
+.daily-trend-item small {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
 .marketing-action-item {
   display: flex;
   align-items: flex-start;
