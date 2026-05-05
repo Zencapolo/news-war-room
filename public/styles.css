@@ -1387,15 +1387,20 @@ summary {
   white-space: nowrap;
 }
 
-.automation-panel {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+#alerts .panel {
+  min-height: 394px;
   max-height: 394px;
 }
 
+.timeline-panel,
+.automation-panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.timeline-panel .timeline,
 .automation-panel .alert-list {
   min-height: 0;
-  max-height: 282px;
   overflow-y: auto;
   padding-right: 4px;
 }
