@@ -527,7 +527,7 @@ function renderMarketingTaskCard(task) {
               <input type="date" data-task-field="dueDate" data-task-id="${escapeHtml(task.id)}" value="${escapeHtml(task.dueDate || "")}">
             </label>
             <label>備註
-              <input data-task-field="note" data-task-id="${escapeHtml(task.id)}" value="${escapeHtml(task.note || "")}" placeholder="審核意見、素材需求、限制">
+              <textarea class="task-note" data-task-field="note" data-task-id="${escapeHtml(task.id)}" rows="4" placeholder="審核意見、素材需求、限制">${escapeHtml(task.note || "")}</textarea>
             </label>
           </div>
           <label class="task-draft">內容草稿

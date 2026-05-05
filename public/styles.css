@@ -511,7 +511,8 @@ main {
 
 .task-column.is-primary .task-column-list {
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  max-height: 430px;
+  max-height: none;
+  overflow: visible;
 }
 
 .task-column.is-secondary {
@@ -963,7 +964,7 @@ main {
 }
 
 .task-detail[open] {
-  max-height: min(680px, 76vh);
+  max-height: min(760px, 80vh);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -982,9 +983,13 @@ main {
 
 .task-detail-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin-top: 12px;
+}
+
+.task-detail-grid label:last-child {
+  grid-column: 1 / -1;
 }
 
 .task-detail label,
@@ -1017,9 +1022,16 @@ main {
   line-height: 1.6;
 }
 
+.task-note {
+  min-height: 120px;
+  max-height: 220px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 .task-draft textarea {
   min-height: 260px;
-  max-height: 420px;
+  max-height: 360px;
   overflow-y: auto;
   overscroll-behavior: contain;
   white-space: pre-wrap;
