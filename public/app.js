@@ -331,10 +331,17 @@ function renderMarketingDailyReport() {
           <strong>${escapeHtml(item.label)} ${item.score}</strong>
           ${escapeHtml(item.idea)}
           <span>${escapeHtml(item.intent)} · 風險${escapeHtml(item.risk)} · ${item.channels.map(escapeHtml).join(" / ")}</span>
+          <small class="marketing-source">
+            來源新聞：${escapeHtml(item.title)}
+            <em>${escapeHtml(item.source || item.category || "未知來源")}${item.publishedAt ? ` · ${formatDate(item.publishedAt)}` : ""}</em>
+          </small>
         </div>
-        <button type="button" ${item.hasTask ? "disabled" : ""} data-marketing-action="create-task" data-source-id="${escapeHtml(item.id)}" data-idea="${escapeHtml(item.idea)}" data-type="${escapeHtml(item.channels[0] || "內容觀察")}" data-priority="${item.score >= 72 ? "高" : item.score >= 48 ? "中" : "低"}">
-          ${item.hasTask ? "已建立" : "建立任務"}
-        </button>
+        <div class="marketing-action-buttons">
+          <button type="button" data-marketing-action="focus-news" data-source-id="${escapeHtml(item.id)}">查看新聞</button>
+          <button type="button" ${item.hasTask ? "disabled" : ""} data-marketing-action="create-task" data-source-id="${escapeHtml(item.id)}" data-idea="${escapeHtml(item.idea)}" data-type="${escapeHtml(item.channels[0] || "內容觀察")}" data-priority="${item.score >= 72 ? "高" : item.score >= 48 ? "中" : "低"}">
+            ${item.hasTask ? "已建立" : "建立任務"}
+          </button>
+        </div>
       </li>
     `).join("")
     : "<li>目前沒有明顯可借勢的行銷題材。</li>";
@@ -781,8 +788,27 @@ async function handleWatchAction(event) {
 }
 
 async function handleDailyMarketingAction(event) {
-  const button = event.target.closest("button[data-marketing-action='create-task']");
+  const button = event.target.closest("button[data-marketing-action]");
   if (!button) return;
+  if (button.dataset.marketingAction === "focus-news") {
+    let article = elements.newsList.querySelector(`.news-card[data-article-id="${CSS.escape(button.dataset.sourceId)}"]`);
+    if (!article) {
+      state.query = "";
+      state.category = "all";
+      state.tag = "all";
+      state.filter = "all";
+      state.sort = "latest";
+      elements.newsSearch.value = "";
+      await loadDashboard(false);
+      article = elements.newsList.querySelector(`.news-card[data-article-id="${CSS.escape(button.dataset.sourceId)}"]`);
+    }
+    if (!article) return;
+    article.scrollIntoView({ behavior: "smooth", block: "center" });
+    article.classList.add("is-focused");
+    window.setTimeout(() => article.classList.remove("is-focused"), 1800);
+    return;
+  }
+  if (button.dataset.marketingAction !== "create-task") return;
   await fetch("/api/marketing-tasks", {
     method: "POST",
     headers: { "content-type": "application/json" },

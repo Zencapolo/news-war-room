@@ -747,6 +747,31 @@ main {
   display: block;
 }
 
+.marketing-action-item > div {
+  min-width: 0;
+}
+
+.marketing-source {
+  display: block;
+  margin-top: 8px;
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+.marketing-source em {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 800;
+}
+
+.marketing-action-buttons {
+  display: grid;
+  gap: 8px;
+  flex: 0 0 104px;
+}
+
 .marketing-action-item button,
 .task-actions button,
 .task-actions select {
@@ -1465,6 +1490,11 @@ summary {
   .marketing-task,
   .watch-item {
     flex-direction: column;
+  }
+
+  .marketing-action-buttons,
+  .marketing-action-buttons button {
+    width: 100%;
   }
 
   .topic-actions {
