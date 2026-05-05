@@ -1328,6 +1328,19 @@ summary {
   white-space: nowrap;
 }
 
+.automation-panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  max-height: 394px;
+}
+
+.automation-panel .alert-list {
+  min-height: 0;
+  max-height: 282px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
 .alert-item {
   padding: 14px;
   box-shadow: none;
