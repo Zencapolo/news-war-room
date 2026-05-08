@@ -528,6 +528,122 @@ main {
   font-weight: 800;
 }
 
+.post-generator-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.post-generator-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.post-generator-form label.wide,
+.post-generator-actions,
+.post-output {
+  grid-column: 1 / -1;
+}
+
+.post-generator-form input,
+.post-generator-form select,
+.post-generator-form textarea {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--ink);
+  padding: 10px 12px;
+  font: inherit;
+  font-weight: 500;
+}
+
+.post-generator-form textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.post-generator-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.post-generator-actions button,
+.post-result button {
+  min-height: 40px;
+  border: 1px solid #b8dff0;
+  border-radius: 8px;
+  background: #e9f4ff;
+  color: var(--blue);
+  padding: 0 12px;
+  font-weight: 900;
+}
+
+.post-generator-actions button[type="submit"] {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: #ffffff;
+}
+
+.post-output {
+  margin-top: 14px;
+}
+
+.post-result {
+  display: grid;
+  gap: 12px;
+}
+
+.post-result header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 14px;
+}
+
+.post-result h3,
+.post-result h4 {
+  margin: 0;
+}
+
+.post-result h3 {
+  margin-top: 8px;
+  font-size: 20px;
+}
+
+.post-result section {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+  padding: 14px;
+}
+
+.post-result pre {
+  margin: 10px 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.7;
+}
+
+.post-result ul {
+  margin: 10px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
 .task-column {
   display: grid;
   gap: 10px;
@@ -1507,6 +1623,7 @@ summary {
   .trend-summary,
   .daily-overview,
   .daily-category-grid,
+  .post-generator-form,
   .split-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1537,6 +1654,7 @@ summary {
   .daily-overview,
   .daily-category-grid,
   .daily-columns,
+  .post-generator-form,
   .task-folders,
   .task-detail-grid,
   .marketing-task-list,
@@ -1553,6 +1671,7 @@ summary {
   .topic-form input,
   .topic-form select,
   .topic-form button,
+  .post-generator-actions button,
   .secondary-button {
     width: 100%;
   }
@@ -1578,6 +1697,7 @@ summary {
   }
 
   .marketing-action-item,
+  .post-result header,
   .marketing-task,
   .watch-item {
     flex-direction: column;

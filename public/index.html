@@ -20,6 +20,8 @@
           <a href="#analysis" class="active">戰情摘要</a>
           <a href="#topics">監測主題</a>
           <a href="#daily">每日摘要</a>
+          <a href="#postGenerator">貼文生成</a>
+          <a href="/marketing.html">素材工作台</a>
           <a href="#marketingTasks">行銷任務</a>
           <a href="#watchlist">追蹤清單</a>
           <a href="#search">新聞檢索</a>
@@ -129,6 +131,75 @@
             <span class="data-mode" id="watchCount">0 則追蹤</span>
           </div>
           <div class="watch-list" id="watchList"></div>
+        </section>
+
+        <section class="panel post-generator" id="postGenerator">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Social Composer</p>
+              <h2>單篇社群貼文生成器</h2>
+            </div>
+            <span class="data-mode" id="postGeneratorStatus">草稿模式</span>
+          </div>
+          <form class="post-generator-form" id="postGeneratorForm">
+            <label>
+              產品 / 服務
+              <input id="postProduct" name="product" placeholder="例如：銀髮健身課程" required>
+            </label>
+            <label>
+              活動主題
+              <input id="postTopic" name="topic" placeholder="例如：母親節體驗課">
+            </label>
+            <label>
+              目標客群
+              <input id="postAudience" name="audience" placeholder="例如：想陪爸媽動起來的上班族">
+            </label>
+            <label>
+              平台
+              <select id="postPlatform" name="platform">
+                <option value="facebook">Facebook</option>
+                <option value="instagram">Instagram</option>
+                <option value="threads">Threads</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="line">LINE OA</option>
+              </select>
+            </label>
+            <label>
+              客戶痛點
+              <input id="postPainPoint" name="painPoint" placeholder="例如：想幫家人運動，但不知道從哪開始">
+            </label>
+            <label>
+              優惠 / 賣點
+              <input id="postOffer" name="offer" placeholder="例如：首次體驗 30 分鐘免費">
+            </label>
+            <label>
+              CTA
+              <input id="postCta" name="cta" placeholder="例如：私訊預約體驗">
+            </label>
+            <label>
+              語氣
+              <input id="postTone" name="tone" placeholder="例如：溫暖、可信任、有行動感">
+            </label>
+            <label>
+              關鍵字
+              <input id="postKeywords" name="keywords" placeholder="例如：健康老化、肌力、陪伴">
+            </label>
+            <label>
+              圖片風格
+              <input id="postVisualStyle" name="visualStyle" placeholder="例如：明亮生活感、真實人物、柔和品牌色">
+            </label>
+            <label class="wide">
+              品牌規範 / 禁語
+              <textarea id="postBrandRules" name="brandRules" rows="3" placeholder="例如：不要保證療效，不要過度恐嚇，避免低價促銷感"></textarea>
+            </label>
+            <div class="post-generator-actions">
+              <button type="submit">產生貼文草稿</button>
+              <button class="secondary-button" id="postGeneratorReset" type="button">清空</button>
+            </div>
+          </form>
+          <div class="post-output" id="postOutput">
+            <div class="empty">填入產品、客群和活動後，這裡會產生貼文、Hashtags 與圖片 prompt。</div>
+          </div>
         </section>
 
         <section class="panel" id="marketingTasks">

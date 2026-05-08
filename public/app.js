@@ -10,6 +10,7 @@ const state = {
   taskStatus: "all",
   taskPriority: "all",
   taskType: "all",
+  generatedPost: null,
   searchOpen: false
 };
 
@@ -40,6 +41,10 @@ const elements = {
   watchList: document.querySelector("#watchList"),
   marketingTaskCount: document.querySelector("#marketingTaskCount"),
   marketingTaskList: document.querySelector("#marketingTaskList"),
+  postGeneratorForm: document.querySelector("#postGeneratorForm"),
+  postGeneratorStatus: document.querySelector("#postGeneratorStatus"),
+  postGeneratorReset: document.querySelector("#postGeneratorReset"),
+  postOutput: document.querySelector("#postOutput"),
   taskStatusFilter: document.querySelector("#taskStatusFilter"),
   taskPriorityFilter: document.querySelector("#taskPriorityFilter"),
   taskTypeFilter: document.querySelector("#taskTypeFilter"),
@@ -694,6 +699,59 @@ function renderAlerts() {
   `).join("");
 }
 
+function postBundleText(post) {
+  return [
+    `【${post.platform}】${post.title}`,
+    "",
+    post.caption,
+    "",
+    "圖片 Prompt:",
+    post.imagePrompt,
+    "",
+    "備註:",
+    ...(post.notes || []).map((note) => `- ${note}`)
+  ].join("\n");
+}
+
+function renderGeneratedPost() {
+  const post = state.generatedPost;
+  if (!elements.postOutput) return;
+  if (!post) {
+    elements.postOutput.innerHTML = '<div class="empty">填入產品、客群和活動後，這裡會產生貼文、Hashtags 與圖片 prompt。</div>';
+    return;
+  }
+  elements.postGeneratorStatus.textContent = `${post.platform} 草稿`;
+  elements.postOutput.innerHTML = `
+    <article class="post-result">
+      <header>
+        <div>
+          <span class="tag">${escapeHtml(post.platform)}</span>
+          <h3>${escapeHtml(post.title)}</h3>
+        </div>
+        <button type="button" data-post-action="copy-bundle">複製整包</button>
+      </header>
+      <section>
+        <h4>貼文文案</h4>
+        <pre>${escapeHtml(post.caption)}</pre>
+        <button type="button" data-post-action="copy-caption">複製文案</button>
+      </section>
+      <section>
+        <h4>圖片 Prompt</h4>
+        <pre>${escapeHtml(post.imagePrompt)}</pre>
+        <button type="button" data-post-action="copy-image-prompt">複製 Prompt</button>
+      </section>
+      <section>
+        <h4>替代開場</h4>
+        <ul>${post.altHooks.map((hook) => `<li>${escapeHtml(hook)}</li>`).join("")}</ul>
+      </section>
+      <section>
+        <h4>審稿提醒</h4>
+        <ul>${post.notes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul>
+      </section>
+    </article>
+  `;
+}
+
 function renderAll() {
   renderSummary();
   renderControls();
@@ -707,6 +765,7 @@ function renderAll() {
   renderNews();
   renderTimeline();
   renderAlerts();
+  renderGeneratedPost();
 }
 
 function setSearchPanelOpen(open) {
@@ -735,6 +794,51 @@ async function addTopic(event) {
   if (!response.ok) return;
   elements.topicForm.reset();
   await loadDashboard(true);
+}
+
+async function generateSocialPost(event) {
+  event.preventDefault();
+  if (!elements.postGeneratorForm) return;
+  const formData = new FormData(elements.postGeneratorForm);
+  const body = Object.fromEntries(formData.entries());
+  elements.postGeneratorStatus.textContent = "產生中...";
+  const response = await fetch("/api/social-posts/generate", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  if (!response.ok) {
+    elements.postGeneratorStatus.textContent = "產生失敗";
+    elements.postOutput.innerHTML = '<div class="empty">產生失敗，請稍後再試。</div>';
+    return;
+  }
+  const payload = await response.json();
+  state.generatedPost = payload.post;
+  renderGeneratedPost();
+}
+
+function resetSocialPost() {
+  elements.postGeneratorForm?.reset();
+  state.generatedPost = null;
+  if (elements.postGeneratorStatus) elements.postGeneratorStatus.textContent = "草稿模式";
+  renderGeneratedPost();
+}
+
+async function handleGeneratedPostAction(event) {
+  const button = event.target.closest("[data-post-action]");
+  if (!button || !state.generatedPost) return;
+  const action = button.dataset.postAction;
+  const value = action === "copy-caption"
+    ? state.generatedPost.caption
+    : action === "copy-image-prompt"
+      ? state.generatedPost.imagePrompt
+      : postBundleText(state.generatedPost);
+  await copyText(value);
+  const original = button.textContent;
+  button.textContent = "已複製";
+  window.setTimeout(() => {
+    button.textContent = original;
+  }, 1400);
 }
 
 async function handleTopicAction(event) {
@@ -1010,6 +1114,9 @@ function scheduleLoad() {
 
 elements.refreshButton.addEventListener("click", () => loadDashboard(true));
 elements.topicForm.addEventListener("submit", addTopic);
+elements.postGeneratorForm?.addEventListener("submit", generateSocialPost);
+elements.postGeneratorReset?.addEventListener("click", resetSocialPost);
+elements.postOutput?.addEventListener("click", handleGeneratedPostAction);
 elements.topicList.addEventListener("click", handleTopicAction);
 elements.briefStrip.addEventListener("click", handleBriefAction);
 elements.openTopicsButton.addEventListener("click", openTopicsDialog);

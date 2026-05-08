@@ -10,6 +10,7 @@ const publicDir = join(root, "public");
 const dataFile = join(root, "data-store.json");
 const dataDir = join(root, "data");
 const sqliteFile = join(dataDir, "news-war-room.db");
+const brandProfileFile = join(dataDir, "marketing-brand-profile.json");
 const port = Number(process.env.PORT || 4174);
 
 const categories = ["AI", "慈善", "金融", "教育"];
@@ -74,6 +75,23 @@ const store = {
   watchlist: {},
   marketingTasks: {},
   lastRefresh: { refreshedFeeds: 0, errors: [], refreshedAt: null }
+};
+
+const defaultBrandProfile = {
+  brandName: "品牌名稱",
+  tone: "溫暖、專業、可信任",
+  audience: "主要目標客群",
+  valueProps: "核心賣點、服務特色、差異化優勢",
+  forbiddenWords: "保證、最便宜、立即治癒、百分百有效",
+  preferredCtas: "立即了解、私訊預約、領取方案",
+  visualStyle: "明亮、真實人物、乾淨版面、保留文字空間",
+  sampleGood: "用具體情境說明價值，語氣自然，不過度推銷。",
+  sampleBad: "過度誇大、恐嚇式銷售、只喊優惠沒有理由。"
+};
+
+const runtimeOpenAIConfig = {
+  apiKey: "",
+  model: process.env.OPENAI_MODEL || "gpt-5.2"
 };
 
 let saveChain = Promise.resolve();
@@ -1136,6 +1154,615 @@ function parseOpml(opml = "") {
     .filter(Boolean);
 }
 
+function cleanInput(value = "", fallback = "") {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  return text || fallback;
+}
+
+function splitList(value = "") {
+  return String(value || "")
+    .split(/[,，、\n]/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 8);
+}
+
+function platformAdvice(platform) {
+  const map = {
+    facebook: { name: "Facebook", length: "中等篇幅", rhythm: "情境開場，補足資訊與明確行動" },
+    instagram: { name: "Instagram", length: "短句分行", rhythm: "視覺感強，適合搭配表情與 hashtag" },
+    threads: { name: "Threads", length: "短篇", rhythm: "像一句能引發討論的觀點" },
+    linkedin: { name: "LinkedIn", length: "專業篇幅", rhythm: "先講洞察，再帶出品牌解法" },
+    line: { name: "LINE OA", length: "精簡直白", rhythm: "優惠、時間、行動要非常清楚" }
+  };
+  return map[platform] || map.facebook;
+}
+
+function makeHashtags({ product, topic, audience, keywords }) {
+  const terms = [
+    ...splitList(keywords),
+    topic,
+    product,
+    audience
+  ].filter(Boolean);
+  return [...new Set(terms)]
+    .slice(0, 6)
+    .map((term) => `#${term.replace(/[^\p{L}\p{N}]+/gu, "")}`)
+    .filter((tag) => tag.length > 1);
+}
+
+async function loadBrandProfile() {
+  await mkdir(dataDir, { recursive: true });
+  try {
+    const parsed = JSON.parse(await readFile(brandProfileFile, "utf8"));
+    return { ...defaultBrandProfile, ...parsed };
+  } catch (error) {
+    if (error.code !== "ENOENT") console.warn(`Unable to load brand profile: ${error.message}`);
+    await writeFile(brandProfileFile, JSON.stringify(defaultBrandProfile, null, 2), "utf8");
+    return { ...defaultBrandProfile };
+  }
+}
+
+async function saveBrandProfile(profile) {
+  const next = {};
+  for (const key of Object.keys(defaultBrandProfile)) {
+    next[key] = cleanInput(profile[key], defaultBrandProfile[key]);
+  }
+  await mkdir(dataDir, { recursive: true });
+  await writeFile(brandProfileFile, JSON.stringify(next, null, 2), "utf8");
+  return next;
+}
+
+function publicOpenAIConfig() {
+  return {
+    hasKey: Boolean(runtimeOpenAIConfig.apiKey || process.env.OPENAI_API_KEY),
+    keySource: runtimeOpenAIConfig.apiKey ? "介面設定" : process.env.OPENAI_API_KEY ? "環境變數" : "未設定",
+    model: runtimeOpenAIConfig.model || process.env.OPENAI_MODEL || "gpt-5.2"
+  };
+}
+
+function updateOpenAIConfig(input = {}) {
+  const apiKey = String(input.apiKey || "").trim();
+  const model = cleanInput(input.model, runtimeOpenAIConfig.model || "gpt-5.2");
+  if (apiKey) runtimeOpenAIConfig.apiKey = apiKey;
+  runtimeOpenAIConfig.model = model;
+  if (input.clearKey === true) runtimeOpenAIConfig.apiKey = "";
+  return publicOpenAIConfig();
+}
+
+async function generateOpenAIImage(input = {}) {
+  const apiKey = runtimeOpenAIConfig.apiKey || process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    return {
+      ok: false,
+      type: "missing_key",
+      message: "尚未設定 OpenAI API Key。"
+    };
+  }
+
+  const prompt = cleanInput(input.prompt, "");
+  if (!prompt) {
+    return {
+      ok: false,
+      type: "missing_prompt",
+      message: "缺少圖片 Prompt。"
+    };
+  }
+
+  const visualType = cleanInput(input.visualType, "photo");
+  const finalPrompt = visualType === "keyVisual"
+    ? [
+      prompt,
+      "Create a premium social media campaign background image only.",
+      "Do not render any readable text, letters, logos, captions, UI, or typography inside the image.",
+      "Leave clean negative space for a designer to overlay Traditional Chinese headline and benefit text later.",
+      "Use polished commercial photography, warm natural lighting, realistic people, and a modern wellness brand feeling."
+    ].join(" ")
+    : prompt;
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/images/generations", {
+      method: "POST",
+      headers: {
+        "authorization": `Bearer ${apiKey}`,
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        model: cleanInput(input.model, "gpt-image-1"),
+        prompt: finalPrompt,
+        size: cleanInput(input.size, "1024x1024"),
+        quality: cleanInput(input.quality, "medium"),
+        output_format: "png",
+        n: 1
+      })
+    });
+
+    if (!response.ok) {
+      const detail = await response.text();
+      return {
+        ok: false,
+        type: "api_error",
+        status: response.status,
+        message: detail.slice(0, 600)
+      };
+    }
+
+    const payload = await response.json();
+    const image = payload.data?.[0];
+    if (!image?.b64_json) {
+      return {
+        ok: false,
+        type: "empty_response",
+        message: "OpenAI 沒有回傳圖片資料。"
+      };
+    }
+
+    return {
+      ok: true,
+      type: "generated",
+      mimeType: "image/png",
+      imageDataUrl: `data:image/png;base64,${image.b64_json}`,
+      revisedPrompt: image.revised_prompt || "",
+      model: cleanInput(input.model, "gpt-image-1"),
+      size: cleanInput(input.size, "1024x1024"),
+      quality: cleanInput(input.quality, "medium"),
+      visualType
+    };
+  } catch (error) {
+    const cause = error.cause ? `${error.cause.code || error.cause.name || "cause"}: ${error.cause.message}` : "";
+    return {
+      ok: false,
+      type: "network_error",
+      message: [error.message, cause].filter(Boolean).join(" | ")
+    };
+  }
+}
+
+async function testOpenAIConnection() {
+  const apiKey = runtimeOpenAIConfig.apiKey || process.env.OPENAI_API_KEY;
+  const model = runtimeOpenAIConfig.model || process.env.OPENAI_MODEL || "gpt-5.2";
+  if (!apiKey) {
+    return {
+      ok: false,
+      type: "missing_key",
+      message: "尚未設定 OpenAI API Key。",
+      config: publicOpenAIConfig()
+    };
+  }
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/responses", {
+      method: "POST",
+      headers: {
+        "authorization": `Bearer ${apiKey}`,
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        model,
+        input: "Reply with OK."
+      })
+    });
+
+    if (!response.ok) {
+      const detail = await response.text();
+      return {
+        ok: false,
+        type: "api_error",
+        status: response.status,
+        message: detail.slice(0, 500),
+        config: publicOpenAIConfig()
+      };
+    }
+
+    const payload = await response.json();
+    return {
+      ok: true,
+      type: "connected",
+      message: extractResponseText(payload) || "OK",
+      config: publicOpenAIConfig()
+    };
+  } catch (error) {
+    const cause = error.cause ? `${error.cause.code || error.cause.name || "cause"}: ${error.cause.message}` : "";
+    return {
+      ok: false,
+      type: "network_error",
+      message: [error.message, cause].filter(Boolean).join(" | "),
+      config: publicOpenAIConfig()
+    };
+  }
+}
+
+function includesAny(text, words) {
+  const source = String(text || "").toLowerCase();
+  return words.some((word) => source.includes(String(word).toLowerCase()));
+}
+
+function inferMarketingStrategy({ product, topic, audience, painPoint, offer, cta, keywords, platform }) {
+  const haystack = [product, topic, audience, painPoint, offer, cta, ...keywords].join(" ");
+  const isCare = includesAny(haystack, ["銀髮", "長照", "照護", "健康", "健身", "爸媽", "陪伴", "醫", "安全"]);
+  const isEducation = includesAny(haystack, ["課程", "學習", "教育", "培訓", "講座", "工作坊", "營隊"]);
+  const isUrgent = includesAny(haystack, ["限時", "早鳥", "倒數", "名額", "今天", "本週", "優惠"]);
+  const isB2B = platform.name === "LinkedIn" || includesAny(audience, ["企業", "主管", "品牌", "團隊", "公司", "hr", "b2b"]);
+  const isHighTrust = isCare || includesAny(haystack, ["金融", "保險", "公益", "捐款", "醫療", "投資"]);
+
+  const promise = isCare
+    ? "降低開始門檻，讓家人用安心、可持續的方式採取行動"
+    : isEducation
+      ? "把複雜學習拆成明確下一步，讓受眾願意先嘗試"
+      : isB2B
+        ? "用具體效益與決策理由，降低內部推動阻力"
+        : "把模糊需求轉成一個容易立即回應的行動";
+
+  const angle = isHighTrust
+    ? "信任建立型"
+    : isUrgent
+      ? "限時行動型"
+      : isEducation
+        ? "學習啟動型"
+        : isB2B
+          ? "決策洞察型"
+          : "生活情境型";
+
+  const funnelStage = isUrgent
+    ? "轉換"
+    : isHighTrust
+      ? "信任培養"
+      : isEducation
+        ? "認知到考慮"
+        : "認知";
+
+  const objections = [
+    isCare ? "擔心安全性或專業度不足" : "不知道是否真的適合自己",
+    isUrgent ? "覺得現在不急，可以晚點再看" : "擔心投入後沒有明顯收穫",
+    isB2B ? "需要更明確的成效或內部說服材料" : "不想被太強的銷售語氣推著走"
+  ];
+
+  return {
+    angle,
+    funnelStage,
+    promise,
+    audienceInsight: `${audience}在意的不是單純知道「${topic}」，而是要確認這件事和自己的處境有關，且下一步不麻煩。`,
+    keyMessage: `${product}可以幫${audience}把「${painPoint}」轉成可開始、可判斷、可回應的行動。`,
+    objections,
+    confidence: Math.min(92, 62 + keywords.length * 4 + (painPoint.length > 8 ? 10 : 0) + (offer.length > 6 ? 8 : 0))
+  };
+}
+
+function platformCaption({ platform, audience, painPoint, product, topic, offer, cta, strategy, hashtags }) {
+  if (platform.name === "Instagram") {
+    return [
+      `${audience}，這件事可以不用自己摸索。`,
+      "",
+      `如果你正在想：${painPoint}`,
+      `這次「${topic}」會把第一步變得更清楚。`,
+      "",
+      `${product}`,
+      offer,
+      "",
+      cta,
+      "",
+      hashtags.join(" ")
+    ].filter(Boolean).join("\n");
+  }
+
+  if (platform.name === "Threads") {
+    return [
+      `${painPoint}`,
+      "",
+      `很多${audience}卡住的不是不想做，而是不知道第一步怎麼開始。`,
+      `${product}這次用「${topic}」把門檻降下來。`,
+      "",
+      `${cta}。`,
+      hashtags.slice(0, 3).join(" ")
+    ].filter(Boolean).join("\n");
+  }
+
+  if (platform.name === "LinkedIn") {
+    return [
+      `${strategy.audienceInsight}`,
+      "",
+      `對${audience}來說，真正的挑戰通常不是資訊不夠，而是缺少一個能被採納的起點。`,
+      `${product}以「${topic}」回應這個需求：${strategy.promise}。`,
+      "",
+      `核心訊息：${strategy.keyMessage}`,
+      "",
+      `${offer}`,
+      `${cta}`,
+      "",
+      hashtags.slice(0, 4).join(" ")
+    ].filter(Boolean).join("\n");
+  }
+
+  if (platform.name === "LINE OA") {
+    return [
+      `${topic}`,
+      "",
+      `${audience}如果正在煩惱「${painPoint}」，可以先從這一步開始。`,
+      `${product}：${offer}`,
+      "",
+      `${cta}`
+    ].filter(Boolean).join("\n");
+  }
+
+  return [
+    `${audience}最近是不是也在想：${painPoint}？`,
+    "",
+    `很多人不是不想開始，而是缺少一個安心、清楚、能立即採取行動的起點。`,
+    `${product}這次以「${topic}」回應這個需求，重點不是把事情變複雜，而是讓你知道下一步可以怎麼做。`,
+    "",
+    `${offer}`,
+    `${cta}`,
+    "",
+    hashtags.join(" ")
+  ].filter(Boolean).join("\n");
+}
+
+function generateSocialPost(input = {}) {
+  const product = cleanInput(input.product, "品牌服務");
+  const topic = cleanInput(input.topic, "本月活動");
+  const audience = cleanInput(input.audience, "目標客群");
+  const offer = cleanInput(input.offer, "了解更多方案");
+  const tone = cleanInput(input.tone, "溫暖、專業、可信任");
+  const cta = cleanInput(input.cta, "立即了解");
+  const platform = platformAdvice(input.platform);
+  const keywords = splitList(input.keywords);
+  const painPoint = cleanInput(input.painPoint, "想把事情做得更有效率");
+  const visualStyle = cleanInput(input.visualStyle, "乾淨明亮、真實情境、品牌感");
+  const brandRules = cleanInput(input.brandRules, "避免誇大承諾，語氣自然");
+  const hashtags = makeHashtags({ product, topic, audience, keywords });
+  const keywordLine = keywords.length ? `關鍵字：${keywords.join("、")}` : "";
+  const strategy = inferMarketingStrategy({ product, topic, audience, painPoint, offer, cta, keywords, platform });
+  const caption = platformCaption({ platform, audience, painPoint, product, topic, offer, cta, strategy, hashtags });
+
+  const altHooks = [
+    `問題型：${audience}是不是也卡在「${painPoint}」？`,
+    `洞察型：很多時候不是不想開始，而是缺少一個放心的第一步。`,
+    `行動型：把「${topic}」排進這週，先用一個小行動測試看看。`
+  ];
+
+  const variants = [
+    {
+      name: "A 版｜信任先行",
+      hook: altHooks[1],
+      caption: `${altHooks[1]}\n\n${product}用「${topic}」降低嘗試門檻，讓${audience}能先理解、再決定。\n\n${offer}\n${cta}`
+    },
+    {
+      name: "B 版｜痛點直切",
+      hook: altHooks[0],
+      caption: `${altHooks[0]}\n\n這次的${topic}不是要你一次做到完美，而是先找到最適合自己的下一步。\n\n${product}｜${offer}\n${cta}`
+    },
+    {
+      name: "C 版｜行動導向",
+      hook: altHooks[2],
+      caption: `${altHooks[2]}\n\n${product}已經把流程整理好，適合想快速確認是否適合的${audience}。\n\n${cta}`
+    }
+  ];
+
+  const imageDirections = [
+    {
+      name: "情境主視覺",
+      prompt: `真實生活情境，${audience}正在面對「${painPoint}」後出現安心感，畫面自然明亮，留白可放「${topic}」。`
+    },
+    {
+      name: "問題解法視覺",
+      prompt: `左右對比構圖，左側呈現「${painPoint}」的困擾，右側呈現${product}帶來的清楚下一步，風格${visualStyle}。`
+    },
+    {
+      name: "品牌信任視覺",
+      prompt: `乾淨專業的品牌主視覺，以${product}為核心，搭配${keywords.slice(0, 3).join("、") || topic}的符號化元素，避免過度促銷。`
+    }
+  ];
+
+  return {
+    generatedAt: new Date().toISOString(),
+    platform: platform.name,
+    tone,
+    title: `${topic}｜${product}`,
+    caption,
+    cta,
+    hashtags,
+    altHooks,
+    strategy,
+    variants,
+    imageDirections,
+    imagePrompt: [
+      `社群貼文主視覺，主題是「${topic}」，產品或服務是「${product}」。核心策略：${strategy.angle}，漏斗階段：${strategy.funnelStage}。`,
+      `目標受眾：${audience}。畫面情緒：${tone}。視覺風格：${visualStyle}。`,
+      `構圖：清楚主體、留白可放標題文字、適合 ${platform.name}。主訊息：${strategy.keyMessage}`,
+      `圖中文字建議：「${topic}」。`,
+      `品牌規範：${brandRules}。避免過度促銷感、避免雜亂背景。`
+    ].join(" "),
+    notes: [
+      `平台建議：${platform.length}，${platform.rhythm}。`,
+      `策略判斷：${strategy.angle}，建議用於「${strategy.funnelStage}」階段。`,
+      keywordLine,
+      `可能反對理由：${strategy.objections.join("；")}。`,
+      `審稿提醒：確認優惠、日期、價格與法規限制後再發布。`
+    ].filter(Boolean)
+  };
+}
+
+function extractResponseText(payload) {
+  if (typeof payload.output_text === "string") return payload.output_text;
+  const chunks = [];
+  for (const item of payload.output || []) {
+    for (const content of item.content || []) {
+      if (content.type === "output_text" && content.text) chunks.push(content.text);
+      if (content.type === "text" && content.text) chunks.push(content.text);
+    }
+  }
+  return chunks.join("\n").trim();
+}
+
+function parseJsonObject(text) {
+  const clean = String(text || "").trim().replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/i, "").trim();
+  try {
+    return JSON.parse(clean);
+  } catch {
+    const match = clean.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error("Model did not return JSON.");
+    return JSON.parse(match[0]);
+  }
+}
+
+function normalizeModelPost(candidate, fallbackPost, input, brandProfile) {
+  const post = candidate && typeof candidate === "object" ? candidate : {};
+  return {
+    ...fallbackPost,
+    generatedAt: new Date().toISOString(),
+    generationMode: "openai",
+    model: process.env.OPENAI_MODEL || "gpt-5.2",
+    platform: cleanInput(post.platform, fallbackPost.platform),
+    tone: cleanInput(post.tone, input.tone || brandProfile.tone || fallbackPost.tone),
+    title: cleanInput(post.title, fallbackPost.title),
+    caption: cleanInput(post.caption, fallbackPost.caption),
+    cta: cleanInput(post.cta, fallbackPost.cta),
+    hashtags: Array.isArray(post.hashtags) && post.hashtags.length ? post.hashtags.slice(0, 8).map((tag) => cleanInput(tag)).filter(Boolean) : fallbackPost.hashtags,
+    altHooks: Array.isArray(post.altHooks) && post.altHooks.length ? post.altHooks.slice(0, 5).map((item) => cleanInput(item)).filter(Boolean) : fallbackPost.altHooks,
+    strategy: post.strategy && typeof post.strategy === "object" ? { ...fallbackPost.strategy, ...post.strategy } : fallbackPost.strategy,
+    variants: Array.isArray(post.variants) && post.variants.length ? post.variants.slice(0, 4) : fallbackPost.variants,
+    imageDirections: Array.isArray(post.imageDirections) && post.imageDirections.length ? post.imageDirections.slice(0, 4) : fallbackPost.imageDirections,
+    imagePrompt: cleanInput(post.imagePrompt, fallbackPost.imagePrompt),
+    notes: Array.isArray(post.notes) && post.notes.length ? post.notes.slice(0, 8).map((item) => cleanInput(item)).filter(Boolean) : fallbackPost.notes
+  };
+}
+
+async function generateOpenAISocialPost(input, brandProfile, fallbackPost) {
+  const apiKey = runtimeOpenAIConfig.apiKey || process.env.OPENAI_API_KEY;
+  if (!apiKey) return { ...fallbackPost, generationMode: "local", warning: "OPENAI_API_KEY is not set; used local strategy engine." };
+
+  const model = runtimeOpenAIConfig.model || process.env.OPENAI_MODEL || "gpt-5.2";
+  const response = await fetch("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: {
+      "authorization": `Bearer ${apiKey}`,
+      "content-type": "application/json"
+    },
+    body: JSON.stringify({
+      model,
+      input: [
+        {
+          role: "system",
+          content: [
+            "你是資深繁體中文行銷策略總監與社群內容總編。",
+            "請根據品牌設定與行銷 brief 產出可直接使用的社群素材。",
+            "必須使用繁體中文。不要誇大療效、投資報酬或無法驗證的承諾。",
+            "只輸出 JSON 物件，不要 markdown，不要解釋。"
+          ].join("\n")
+        },
+        {
+          role: "user",
+          content: JSON.stringify({
+            requiredJsonShape: {
+              platform: "平台名稱",
+              tone: "實際採用語氣",
+              title: "素材標題",
+              caption: "主貼文文案",
+              cta: "CTA",
+              hashtags: ["#標籤"],
+              altHooks: ["替代開場"],
+              strategy: {
+                angle: "行銷角度",
+                funnelStage: "漏斗階段",
+                promise: "核心承諾",
+                audienceInsight: "受眾洞察",
+                keyMessage: "核心訊息",
+                objections: ["可能反對理由"],
+                confidence: 0
+              },
+              variants: [{ name: "A 版｜角度", hook: "開場", caption: "完整文案" }],
+              imageDirections: [{ name: "圖片方向", prompt: "圖片生成提示詞" }],
+              imagePrompt: "最推薦圖片 prompt",
+              notes: ["審稿與平台建議"]
+            },
+            brandProfile,
+            brief: input,
+            fallbackStrategy: fallbackPost.strategy
+          })
+        }
+      ]
+    })
+  });
+
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(`OpenAI API ${response.status}: ${detail.slice(0, 240)}`);
+  }
+
+  const payload = await response.json();
+  const text = extractResponseText(payload);
+  return normalizeModelPost(parseJsonObject(text), fallbackPost, input, brandProfile);
+}
+
+async function generateSmartSocialPost(input = {}) {
+  const storedBrandProfile = await loadBrandProfile();
+  const brandProfile = input.brandProfile && typeof input.brandProfile === "object"
+    ? { ...storedBrandProfile, ...input.brandProfile }
+    : storedBrandProfile;
+  const enrichedInput = {
+    ...input,
+    audience: cleanInput(input.audience, brandProfile.audience),
+    tone: cleanInput(input.tone, brandProfile.tone),
+    visualStyle: cleanInput(input.visualStyle, brandProfile.visualStyle),
+    brandRules: [
+      cleanInput(input.brandRules, ""),
+      `品牌名稱：${brandProfile.brandName}`,
+      `品牌賣點：${brandProfile.valueProps}`,
+      `禁用詞：${brandProfile.forbiddenWords}`,
+      `偏好 CTA：${brandProfile.preferredCtas}`,
+      `好範例：${brandProfile.sampleGood}`,
+      `壞範例：${brandProfile.sampleBad}`
+    ].filter(Boolean).join("\n")
+  };
+  const fallbackPost = generateSocialPost(enrichedInput);
+  try {
+    return await generateOpenAISocialPost(enrichedInput, brandProfile, fallbackPost);
+  } catch (error) {
+    const cause = error.cause ? ` ${error.cause.code || error.cause.name || "cause"}: ${error.cause.message}` : "";
+    return {
+      ...fallbackPost,
+      generationMode: "local",
+      warning: `OpenAI generation failed; used local strategy engine. ${error.message}${cause}`
+    };
+  }
+}
+
+async function generateSocialPostPackage(input = {}) {
+  const requested = String(input.platform || "all");
+  const platforms = requested === "all"
+    ? ["facebook", "instagram", "threads", "linkedin", "line"]
+    : [requested];
+  const posts = [];
+  for (const platform of platforms) {
+    posts.push(await generateSmartSocialPost({ ...input, platform }));
+  }
+  return {
+    generatedAt: new Date().toISOString(),
+    posts
+  };
+}
+
+function reanalyzeSocialPost(input = {}) {
+  const base = generateSocialPost({
+    ...input,
+    platform: input.platformKey || input.platform || "facebook"
+  });
+  return {
+    strategy: base.strategy,
+    variants: base.variants.map((variant) => ({
+      ...variant,
+      caption: variant.caption.replace(base.cta, cleanInput(input.cta, base.cta))
+    })),
+    imageDirections: base.imageDirections,
+    altHooks: base.altHooks,
+    notes: [
+      ...base.notes,
+      "重新分析已根據目前編輯後的主文案與圖片 Prompt 更新輔助判斷。"
+    ],
+    analyzedAt: new Date().toISOString()
+  };
+}
+
 async function readJson(req) {
   let body = "";
   for await (const chunk of req) body += chunk;
@@ -1174,6 +1801,57 @@ await loadStore();
 createServer(async (req, res) => {
   try {
     const url = new URL(req.url || "/", "http://localhost");
+
+    if (url.pathname === "/api/social-posts/generate" && req.method === "POST") {
+      const body = await readJson(req);
+      await sendJson(res, { post: await generateSmartSocialPost(body) });
+      return;
+    }
+
+    if (url.pathname === "/api/social-posts/generate-package" && req.method === "POST") {
+      const body = await readJson(req);
+      await sendJson(res, { package: await generateSocialPostPackage(body) });
+      return;
+    }
+
+    if (url.pathname === "/api/social-posts/reanalyze" && req.method === "POST") {
+      const body = await readJson(req);
+      await sendJson(res, { analysis: reanalyzeSocialPost(body) });
+      return;
+    }
+
+    if (url.pathname === "/api/brand-profile" && req.method === "GET") {
+      await sendJson(res, { profile: await loadBrandProfile() });
+      return;
+    }
+
+    if (url.pathname === "/api/brand-profile" && req.method === "PATCH") {
+      const body = await readJson(req);
+      await sendJson(res, { profile: await saveBrandProfile(body) });
+      return;
+    }
+
+    if (url.pathname === "/api/openai-config" && req.method === "GET") {
+      await sendJson(res, { config: publicOpenAIConfig() });
+      return;
+    }
+
+    if (url.pathname === "/api/openai-config" && req.method === "PATCH") {
+      const body = await readJson(req);
+      await sendJson(res, { config: updateOpenAIConfig(body) });
+      return;
+    }
+
+    if (url.pathname === "/api/openai-config/test" && req.method === "POST") {
+      await sendJson(res, { result: await testOpenAIConnection() });
+      return;
+    }
+
+    if (url.pathname === "/api/images/generate" && req.method === "POST") {
+      const body = await readJson(req);
+      await sendJson(res, { result: await generateOpenAIImage(body) });
+      return;
+    }
 
     if (url.pathname === "/api/dashboard") {
       await refreshFeeds();

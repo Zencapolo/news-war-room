@@ -1,0 +1,11 @@
+{
+  "brandName": "品牌名稱",
+  "tone": "溫暖、專業、可信任",
+  "audience": "主要目標客群",
+  "valueProps": "核心賣點、服務特色、差異化優勢",
+  "forbiddenWords": "保證、最便宜、立即治癒、百分百有效",
+  "preferredCtas": "立即了解、私訊預約、領取方案",
+  "visualStyle": "明亮、真實人物、乾淨版面、保留文字空間",
+  "sampleGood": "用具體情境說明價值，語氣自然，不過度推銷。",
+  "sampleBad": "過度誇大、恐嚇式銷售、只喊優惠沒有理由。"
+}

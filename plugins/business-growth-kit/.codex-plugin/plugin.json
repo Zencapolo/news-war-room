@@ -1,0 +1,34 @@
+{
+  "name": "business-growth-kit",
+  "version": "0.1.0",
+  "description": "A general-purpose business growth plugin for proposals, competitor briefs, and marketing campaigns.",
+  "author": {
+    "name": "Local Codex Workspace"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "business",
+    "sales",
+    "marketing",
+    "strategy"
+  ],
+  "skills": "./skills",
+  "interface": {
+    "displayName": "Business Growth Kit",
+    "shortDescription": "Draft proposals, competitor briefs, and campaign plans.",
+    "longDescription": "A starter Codex plugin for repeatable commercial workflows: sales proposals, competitive analysis, and marketing campaign planning. Designed as a generic MVP that can later be customized with company positioning, brand voice, pricing rules, and internal templates.",
+    "developerName": "Local Codex Workspace",
+    "category": "Productivity",
+    "capabilities": [
+      "Write",
+      "Research",
+      "Analyze"
+    ],
+    "defaultPrompt": [
+      "Use Business Growth Kit to draft a proposal for a B2B software client.",
+      "Use Business Growth Kit to create a competitor brief for three alternatives.",
+      "Use Business Growth Kit to plan a two-week LinkedIn campaign."
+    ],
+    "brandColor": "#176B5B"
+  }
+}

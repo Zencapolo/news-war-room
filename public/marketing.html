@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>行銷素材生成工作台</title>
+    <link rel="stylesheet" href="/marketing.css">
+  </head>
+  <body>
+    <div class="workspace-shell">
+      <aside class="workspace-sidebar" aria-label="素材工作台導覽">
+        <a class="workspace-brand" href="/marketing.html">
+          <span>MC</span>
+          <div>
+            <strong>行銷素材生成工作台</strong>
+            <small>Social Content Studio</small>
+          </div>
+        </a>
+        <nav>
+          <a class="active" href="#composer">生成器</a>
+          <a href="#preview">內容預覽</a>
+          <a href="#library">素材包</a>
+          <a href="/">回戰情系統</a>
+        </nav>
+        <section class="sidebar-panel">
+          <span>今日流程</span>
+          <strong id="draftCount">0</strong>
+          <small>已加入素材包</small>
+        </section>
+      </aside>
+
+      <main class="workspace-main">
+        <header class="workspace-topbar">
+          <div>
+            <p class="eyebrow">Marketing Studio</p>
+            <h1>行銷素材生成工作台</h1>
+          </div>
+          <div class="topbar-actions">
+            <span id="workspaceStatus">草稿模式</span>
+            <button id="openSettingsButton" type="button">設定</button>
+            <button id="loadExampleButton" type="button">套用範例</button>
+          </div>
+        </header>
+
+        <section class="workspace-grid">
+          <form class="composer-panel" id="composer" autocomplete="off">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Brief</p>
+                <h2>行銷需求</h2>
+              </div>
+              <button class="ghost-button" id="resetButton" type="button">清空</button>
+            </div>
+
+            <div class="field-grid">
+              <label>
+                產品 / 服務
+                <input name="product" placeholder="例如：銀髮健身課程" required>
+              </label>
+              <label>
+                活動主題
+                <input name="topic" placeholder="例如：母親節體驗課">
+              </label>
+              <label>
+                目標客群
+                <input name="audience" placeholder="例如：想陪爸媽動起來的上班族">
+              </label>
+              <label>
+                產出平台
+                <select name="platform">
+                  <option value="all" selected>全部平台</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="threads">Threads</option>
+                  <option value="linkedin">LinkedIn</option>
+                  <option value="line">LINE OA</option>
+                </select>
+              </label>
+              <label>
+                客戶痛點
+                <input name="painPoint" placeholder="例如：想幫家人運動，但不知道從哪開始">
+              </label>
+              <label>
+                優惠 / 賣點
+                <input name="offer" placeholder="例如：首次體驗 30 分鐘免費">
+              </label>
+              <label>
+                CTA
+                <input name="cta" placeholder="例如：私訊預約體驗">
+              </label>
+              <label>
+                語氣
+                <input name="tone" placeholder="例如：溫暖、可信任、有行動感">
+              </label>
+              <label>
+                關鍵字
+                <input name="keywords" placeholder="例如：健康老化、肌力、陪伴">
+              </label>
+              <label>
+                圖片風格
+                <input name="visualStyle" placeholder="例如：明亮生活感、真實人物、柔和品牌色">
+              </label>
+              <label class="wide">
+                品牌規範 / 禁語
+                <textarea name="brandRules" rows="4" placeholder="例如：不要保證療效，不要過度恐嚇，避免低價促銷感"></textarea>
+              </label>
+            </div>
+
+            <div class="composer-actions">
+              <button class="primary-button" type="submit">產生並加入預覽</button>
+              <button class="ghost-button" id="copyBriefButton" type="button">複製需求</button>
+            </div>
+          </form>
+
+          <section class="preview-panel" id="preview">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Output</p>
+                <h2>內容預覽</h2>
+              </div>
+              <button class="ghost-button" id="saveDraftButton" type="button" disabled>加入素材包</button>
+            </div>
+            <div id="previewContent" class="preview-empty">
+              <strong>尚未產生素材</strong>
+              <span>填完行銷需求後，這裡會往下疊出各社群平台的文案、圖片 prompt、A/B 版本與審稿提醒。</span>
+            </div>
+          </section>
+        </section>
+
+        <section class="library-panel" id="library">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Review Queue</p>
+              <h2>素材包</h2>
+            </div>
+            <button class="ghost-button" id="clearLibraryButton" type="button">清空素材包</button>
+          </div>
+          <div class="library-list" id="libraryList"></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="settings-dialog" id="settingsDialog">
+      <section class="settings-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Brand Brain</p>
+            <h2>品牌設定</h2>
+          </div>
+          <div class="settings-actions">
+            <button class="ghost-button" id="closeSettingsButton" type="button">關閉</button>
+            <button class="primary-button" id="saveBrandButton" type="button">儲存品牌</button>
+          </div>
+        </div>
+        <form class="brand-form" id="brandForm">
+          <label>
+            品牌名稱
+            <input name="brandName" placeholder="例如：活力熟齡">
+          </label>
+          <label>
+            品牌語氣
+            <input name="tone" placeholder="例如：溫暖、專業、像顧問">
+          </label>
+          <label>
+            主要客群
+            <input name="audience" placeholder="例如：45-60 歲照顧父母的上班族">
+          </label>
+          <label>
+            偏好 CTA
+            <input name="preferredCtas" placeholder="例如：私訊預約、領取方案、立即了解">
+          </label>
+          <label class="wide">
+            核心賣點
+            <textarea name="valueProps" rows="3" placeholder="服務特色、差異化、為什麼值得相信"></textarea>
+          </label>
+          <label class="wide">
+            禁用詞
+            <textarea name="forbiddenWords" rows="2" placeholder="不能出現或要避免的說法"></textarea>
+          </label>
+          <label class="wide">
+            視覺風格
+            <textarea name="visualStyle" rows="2" placeholder="圖片風格、色調、構圖、人物感"></textarea>
+          </label>
+          <label class="wide">
+            喜歡的範例
+            <textarea name="sampleGood" rows="3" placeholder="貼一段你喜歡的品牌文案或描述"></textarea>
+          </label>
+          <label class="wide">
+            不喜歡的範例
+            <textarea name="sampleBad" rows="3" placeholder="貼一段你不想要的文案風格"></textarea>
+          </label>
+        </form>
+        <div class="settings-divider"></div>
+        <div class="openai-settings">
+          <div>
+            <p class="eyebrow">AI Engine</p>
+            <h3>OpenAI API</h3>
+            <p id="openAIStatus">讀取設定中...</p>
+          </div>
+          <form class="openai-form" id="openAIForm">
+            <label>
+              API Key
+              <input name="apiKey" type="password" autocomplete="off" placeholder="sk-...">
+            </label>
+            <label>
+              Model
+              <input name="model" placeholder="gpt-5.2">
+            </label>
+            <div class="openai-actions">
+              <button class="ghost-button" id="clearOpenAIKeyButton" type="button">清除 Key</button>
+              <button class="ghost-button" id="testOpenAIButton" type="button">測試連線</button>
+              <button class="primary-button" id="saveOpenAIButton" type="button">儲存 OpenAI</button>
+            </div>
+          </form>
+          <div class="openai-test-result" id="openAITestResult"></div>
+        </div>
+      </section>
+    </dialog>
+
+    <dialog class="confirm-dialog" id="clearLibraryDialog">
+      <section class="confirm-panel">
+        <h2>清空素材包？</h2>
+        <p>這會移除目前素材包裡的所有草稿。此操作無法復原。</p>
+        <div class="confirm-actions">
+          <button class="ghost-button" id="cancelClearLibraryButton" type="button">取消</button>
+          <button class="danger-button" id="confirmClearLibraryButton" type="button">確認清空</button>
+        </div>
+      </section>
+    </dialog>
+
+    <script src="/marketing-app.js" type="module"></script>
+  </body>
+</html>
